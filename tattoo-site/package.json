@@ -1,0 +1,20 @@
+{
+  "name": "torus-tattoo-site",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "^3.15.1",
+    "ogl": "^1.0.11",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.8"
+  }
+}
