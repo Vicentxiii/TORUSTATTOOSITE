@@ -1,4 +1,26 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 gsap.registerPlugin(ScrollTrigger);
+
+// Capas do TORUS: "novo" primeiro, depois as numeradas (2, 3, 4...).
+const coverModules = import.meta.glob('/assets/TITULO DA HERO*.png', {
+	eager: true,
+	query: '?url',
+	import: 'default',
+});
+
+const heroCovers = Object.entries(coverModules)
+	.filter(([path]) => path !== '/assets/TITULO DA HERO.png')
+	.sort(([first], [second]) => {
+		const rank = (path) => {
+			const number = path.match(/HERO (\d+)/)?.[1];
+			if (number) return Number(number);
+			return path.includes('novo') ? 0 : 99;
+		};
+		return rank(first) - rank(second);
+	})
+	.map(([, src]) => src);
 
 function finishPreloader(preloader, site) {
 	// Libera a página imediatamente quando a animação não deve ser executada.
@@ -9,65 +31,22 @@ function finishPreloader(preloader, site) {
 
 	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 		gsap.set(site.querySelector("h1"), { opacity: 1, y: 0 });
-		window.initFlexCarousel?.();
+		window.initTrabalhosCarousel?.();
 		window.initJhowCarousel?.();
+		window.initSessaoButton?.();
 		return;
 	}
 
 	initLenis();
 	initHero();
-	window.initFlexCarousel?.();
+	window.initTrabalhosCarousel?.();
 	window.initJhowCarousel?.();
+	window.initSessaoButton?.();
 	initAbout();
+	initAboutScroll();
+	initVideoScroll();
 	ScrollTrigger.refresh();
 }
-
-const galleryImages = [
-	"Caveira mulher tattoo.png",
-	"Coringa tattoo.png",
-	"d.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.23_a7b7e013.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.24_293295fd.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.24_34004518.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.24_baf2b9f3.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.25_4d51a7f4.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.25_90cf4ad3.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.25_f3ea293c.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.26_ba2b11c1.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.26_ed0a902d.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.26_f39d1404.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.27_6bec312d.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.27_7555bd11.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.28_3cb9f470.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.28_b834e9d6.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.28_b85e5848.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.28_f1b8cf0d.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.29_4872dbad.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.29_89fad3bd.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.29_c710bdc1.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.29_d4ef8dfa.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.29_e86f5cfa.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.30_16a0a50f.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.30_224b6837.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.31_396dd776.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.31_73ba7b3f.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.31_897300ca.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.42_c9c22b59.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.43_de02192d.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.44_086ac4dd.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.44_3061bb37.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.44_8992d424.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.45_3e94101c.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.45_9ad0571e.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.48_1db30ee8.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.11.48_3a5e1778.jpg",
-	"Imagem do WhatsApp de 2025-02-16 à(s) 19.12.54_79c5cee3.jpg",
-	"Jeesus tattoo.png",
-	"Leao tattoo.png",
-	"Lobo com mulher tattoo.png",
-	"Mulher zikaaa tattoo.png",
-	"tuba.png",
-];
 
 let lenis;
 
@@ -81,16 +60,61 @@ function initLenis() {
 	gsap.ticker.lagSmoothing(0);
 }
 
+const HERO_PIN_RATIO = 0.6;
+
 function initHero() {
 	const hero = document.querySelector(".hero");
-	const titleArt = hero.querySelector(".hero__title-art");
+	const titleWord = hero.querySelector(".hero__word");
+	const next = document.querySelector(".arc-carousel");
 
-	gsap.to(titleArt, {
+	gsap.to(titleWord, {
 		y: 0,
 		clipPath: "inset(0% 0 0)",
 		duration: 1.35,
 		ease: "power4.out",
 	});
+
+	// Empilha as capas extras — cada passo do scroll mostra uma nova.
+	titleWord?.querySelectorAll(".hero__title-art--extra").forEach((el) => el.remove());
+	heroCovers.slice(1).forEach((src) => {
+		const img = document.createElement("img");
+		img.className = "hero__title-art hero__title-art--extra";
+		img.src = src;
+		img.alt = "";
+		img.setAttribute("aria-hidden", "true");
+		titleWord?.appendChild(img);
+	});
+
+	const covers = Array.from(titleWord?.querySelectorAll(".hero__title-art") ?? []);
+	const setCover = (progress) => {
+		if (!covers.length) return;
+		const index = Math.min(covers.length - 1, Math.floor(progress * covers.length));
+		covers.forEach((cover, i) => cover.classList.toggle("is-active", i === index));
+	};
+	setCover(0);
+
+	if (next) {
+		// A seção seguinte sobe por cima do hero (z-index 2) enquanto ele ainda está preso.
+		// A margem negativa compensa exatamente a distância do pin, então nada aparece no início.
+		next.style.marginTop = `-${HERO_PIN_RATIO * 100}vh`;
+
+		// Segura a seção um pouco mais abaixo no começo: assim a palavra "TATTOO"
+		// continua visível e só depois a seção vem por cima dela.
+		gsap.fromTo(next,
+			{ y: () => window.innerHeight * 0.3 },
+			{
+				y: 0,
+				ease: "none",
+				scrollTrigger: {
+					trigger: hero,
+					start: "top top",
+					end: () => `+=${window.innerHeight * HERO_PIN_RATIO}`,
+					scrub: true,
+					invalidateOnRefresh: true,
+				},
+			},
+		);
+	}
 
 	gsap.to(hero.querySelector(".hero__shade"), {
 		opacity: 0.92,
@@ -98,125 +122,133 @@ function initHero() {
 		scrollTrigger: {
 			trigger: hero,
 			start: "top top",
-			end: "+=100%",
+			end: () => `+=${window.innerHeight * HERO_PIN_RATIO}`,
 			scrub: true,
 			pin: true,
 			anticipatePin: 1,
-		},
-	});
-}
-
-function initArcCarousel() {
-	const carousel = document.querySelector(".arc-carousel");
-	const stage = carousel.querySelector(".arc-carousel__stage");
-	const wheel = carousel.querySelector(".arc-carousel__wheel");
-	const index = carousel.querySelector(".arc-carousel__index span");
-	const cards = [];
-	const cardImages = [];
-	const visuals = [];
-	const angles = [];
-
-	// Cria um cartão para cada foto existente em assets/.
-	galleryImages.forEach((filename, imageIndex) => {
-		const angle = (imageIndex / galleryImages.length) * 360 - 180;
-		const card = document.createElement("article");
-		const visual = document.createElement("div");
-		const image = document.createElement("img");
-
-		card.className = "arc-card";
-		card.style.transform = `rotate(${angle}deg) translateY(calc(-1 * var(--arc-radius))) translate(-50%, -50%)`;
-		visual.className = "arc-card__visual";
-		image.src = `assets/${encodeURIComponent(filename)}`;
-		image.alt = `Trabalho de tatuagem ${String(imageIndex + 1).padStart(2, "0")}`;
-		image.loading = "lazy";
-		image.decoding = "async";
-
-		visual.appendChild(image);
-		card.appendChild(visual);
-		wheel.appendChild(card);
-		cards.push(card);
-		cardImages.push(image);
-		visuals.push(visual);
-		angles.push(angle);
-	});
-
-	index.textContent = "01";
-	carousel.querySelector(".arc-carousel__index").lastChild.textContent = ` / ${String(galleryImages.length).padStart(2, "0")}`;
-	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-	const setRadius = () => {
-		const radius = Math.min(window.innerWidth * (window.innerWidth < 700 ? 0.8 : 0.56), window.innerHeight * 1.05);
-		stage.style.setProperty("--arc-radius", `${radius}px`);
-	};
-	setRadius();
-	window.addEventListener("resize", setRadius, { passive: true });
-
-	visuals.forEach((visual, imageIndex) => {
-		gsap.set(visual, { rotation: -angles[imageIndex] });
-	});
-
-	const rotationState = { value: 0 };
-	const updateArcFocus = () => {
-		let focusedIndex = 0;
-		let smallestAngle = Infinity;
-		visuals.forEach((visual, imageIndex) => {
-			const angle = ((angles[imageIndex] + rotationState.value + 180) % 360) - 180;
-			const focus = Math.max(0, Math.cos((angle * Math.PI) / 180));
-			visual.style.scale = `${0.78 + focus * 0.22}`;
-			visual.style.opacity = `${0.25 + focus * 0.75}`;
-			cards[imageIndex].style.zIndex = String(Math.round(focus * 100));
-			if (Math.abs(angle) < smallestAngle) {
-				smallestAngle = Math.abs(angle);
-				focusedIndex = imageIndex;
-			}
-		});
-		index.textContent = String(focusedIndex + 1).padStart(2, "0");
-	};
-
-	const timeline = gsap.timeline({
-		scrollTrigger: {
-			trigger: carousel,
-			start: "top top",
-			end: () => `+=${galleryImages.length * window.innerHeight}`,
-			scrub: 1,
-			pin: true,
-			anticipatePin: 1,
 			invalidateOnRefresh: true,
+			onUpdate: (self) => setCover(self.progress),
 		},
-		onUpdate: updateArcFocus,
 	});
-
-	timeline.to(rotationState, { value: 360, duration: 1, ease: "none" }, 0);
-	timeline.to(wheel, { rotation: 360, duration: 1, ease: "none" }, 0);
-	timeline.to(visuals, { rotation: "-=360", duration: 1, ease: "none" }, 0);
-	updateArcFocus();
 }
 
 function initAbout() {
 	const about = document.querySelector(".about");
 	const photo = about.querySelector(".jhow-photo");
-	const copy = about.querySelectorAll(".about__eyebrow, h2, .about__bio, .about__signature");
+	const copy = about.querySelectorAll(".about__eyebrow, h2, .about__bio, .about__cta, .about__instagram, .about__signature");
 	const timeline = gsap.timeline({
 		scrollTrigger: {
-			trigger: about,
-			start: "top 72%",
+			// A seção ".about" é deslocada via transform, então o gatilho usa a galeria.
+			trigger: ".arc-carousel",
+			start: "bottom 95%",
 			once: true,
 		},
 	});
 
-	// Revela a foto e apresenta o texto em sequência ao entrar na seção.
+	// Revela a foto e apresenta o texto assim que a terceira seção começa a entrar.
 	timeline.to(photo, {
 		clipPath: "inset(0% 0 0)",
-		duration: 1,
+		duration: 0.7,
 		ease: "power3.inOut",
 	});
 	timeline.to(copy, {
 		y: 0,
 		opacity: 1,
-		duration: 0.75,
+		duration: 0.5,
 		ease: "power3.out",
-		stagger: 0.12,
-	}, "-=0.5");
+		stagger: 0.08,
+	}, "-=0.45");
+}
+
+function initAboutScroll() {
+	const about = document.querySelector(".about");
+	if (!about) return;
+	let attempts = 0;
+
+	const start = () => {
+		const api = window.jhowCarouselApi;
+		if (!api || api.count < 2) {
+			if (attempts++ < 120) requestAnimationFrame(start);
+			return;
+		}
+
+		// A galeria aparece inteira primeiro. A terceira seção só começa a subir
+		// por cima dela (z-index 3) no trecho final da rolagem da galeria.
+		gsap.fromTo(about,
+			{ y: () => window.innerHeight },
+			{
+				y: 0,
+				ease: "none",
+				scrollTrigger: {
+					trigger: ".arc-carousel",
+					start: "bottom 65%",
+					end: "bottom top",
+					scrub: true,
+					invalidateOnRefresh: true,
+				},
+			},
+		);
+
+		// Prende a seção quando a galeria termina, enquanto as 3 fotos passam.
+		ScrollTrigger.create({
+			trigger: ".arc-carousel",
+			start: "bottom top",
+			pin: about,
+			end: () => `+=${window.innerHeight * (api.count - 1) * 0.5}`,
+			anticipatePin: 1,
+			invalidateOnRefresh: true,
+			onUpdate: (self) => {
+				api.setPosition(self.progress * (api.count - 1));
+				// Parallax bem leve no texto da bio enquanto as fotos passam.
+				gsap.set(about.querySelector(".about__copy"), { y: -36 - self.progress * 20 });
+			},
+		});
+		ScrollTrigger.refresh();
+	};
+
+	start();
+}
+
+function initVideoScroll() {
+	const section = document.querySelector(".video-section");
+	const video = section?.querySelector(".video-section__media");
+	if (!section || !video) return;
+
+	// O quadro do vídeo acompanha o scroll, sem girar e sem autoplay.
+	const seek = (progress) => {
+		const duration = Number.isFinite(video.duration) ? video.duration : 0;
+		if (!duration) return;
+		video.currentTime = Math.max(0, Math.min(1, progress)) * Math.max(0, duration - 0.05);
+	};
+	if (video.readyState >= 1) seek(0);
+	else video.addEventListener("loadedmetadata", () => seek(0), { once: true });
+
+	const stats = Array.from(section.querySelectorAll(".stat__number"));
+	const timeline = gsap.timeline({
+		scrollTrigger: {
+			trigger: section,
+			start: "top top",
+			end: "+=100%",
+			pin: true,
+			scrub: 1,
+			invalidateOnRefresh: true,
+			onUpdate: (self) => seek(self.progress),
+		},
+	});
+
+	stats.forEach((element, index) => {
+		const target = Number(element.dataset.target) || 0;
+		const suffix = element.dataset.suffix || "";
+		const count = { value: 0 };
+		timeline.to(count, {
+			value: target,
+			duration: 0.7,
+			ease: "none",
+			onUpdate: () => {
+				element.textContent = `${Math.round(count.value)}${suffix}`;
+			},
+		}, index * 0.05);
+	});
 }
 
 function initPreloader() {

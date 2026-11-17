@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import './DepthCarousel.css';
 
@@ -35,7 +35,9 @@ const DepthCarousel = ({
   loop = true,
   showControls = true,
   showIndicators = true,
+  captureWheel = true,
   onChange,
+  onReady,
   className = '',
 }) => {
   const data = useMemo(() => (Array.isArray(items) ? items : []).map(normalizeItem), [items]);
@@ -58,7 +60,7 @@ const DepthCarousel = ({
   onChangeRef.current = onChange;
   cfgRef.current = {
     count, depth, spread, tilt, tiltDirection, visibleCards, falloff, blur,
-    duration, ease, loop, cardWidth, autoplayDelay,
+    duration, ease, loop, cardWidth, autoplayDelay, captureWheel,
   };
 
   const layout = useCallback((position) => {
@@ -146,6 +148,27 @@ const DepthCarousel = ({
 
   const navigateBy = useCallback((step) => setFocus(focusRef.current + step, true), [setFocus]);
 
+  // Controlado de fora (ex.: progresso de um ScrollTrigger): posição contínua, sem tween.
+  const setPosition = useCallback((position) => {
+    const config = cfgRef.current;
+    if (!config.count) return;
+    tweenRef.current?.kill();
+    const next = config.loop ? position : clamp(position, 0, config.count - 1);
+    posRef.current = next;
+    layout(next);
+    const index = ((Math.round(next) % config.count) + config.count) % config.count;
+    if (index !== focusRef.current) {
+      focusRef.current = index;
+      notify(index);
+    }
+  }, [layout, notify]);
+
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
+  useLayoutEffect(() => {
+    onReadyRef.current?.({ setPosition, count });
+  }, [setPosition, count]);
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;
@@ -165,7 +188,7 @@ const DepthCarousel = ({
     if (!root) return undefined;
     const onWheel = (event) => {
       const config = cfgRef.current;
-      if (config.count < 2) return;
+      if (config.count < 2 || !config.captureWheel) return;
       event.preventDefault();
       tweenRef.current?.kill();
       const rawDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;

@@ -1,11 +1,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import FlexCarousel from './components/FlexCarousel.jsx';
+import CircularGallery from './components/CircularGallery.jsx';
 import DepthCarousel from './components/DepthCarousel.jsx';
+import SpecularButton from './components/SpecularButton.jsx';
 import jhowPortrait from '../assets/Foto do Jhow para Bio.png';
 import jhowSeated from '../assets/Foto do Jhow para Bio 2 .png';
 import jhowCloseup from '../assets/Foto do Jhow para Bio 3 .png';
+
+const WHATSAPP_URL = `https://wa.me/5511985545833?text=${encodeURIComponent('Olá Jow, vim pelo seu site, eu curti muitos seus trabalhos, podemos marcar um horário?')}`;
 
 const imageModules = import.meta.glob('/assets/*.{jpg,jpeg,png,webp,avif}', {
   eager: true,
@@ -14,12 +17,12 @@ const imageModules = import.meta.glob('/assets/*.{jpg,jpeg,png,webp,avif}', {
 });
 
 const items = Object.entries(imageModules)
-  .filter(([path]) => !path.includes('Foto do Jhow para Bio'))
+  .filter(([path]) => !path.includes('Foto do Jhow para Bio') && !path.includes('TITULO DA HERO') && !path.includes('Nova Capa do site'))
   .sort(([first], [second]) => first.localeCompare(second, 'pt-BR'))
   .map(([path, src], index) => ({
-    src,
+    image: src,
     alt: `Trabalho de tatuagem ${String(index + 1).padStart(2, '0')}`,
-    title: `Trabalho ${String(index + 1).padStart(2, '0')}`,
+    text: `Trabalho ${String(index + 1).padStart(2, '0')}`,
   }));
 
 const jhowPhotos = [
@@ -28,28 +31,61 @@ const jhowPhotos = [
   { image: jhowCloseup, alt: 'Retrato aproximado do Jhow' },
 ];
 
-let flexRoot;
+let trabalhosRoot;
 let jhowRoot;
+let sessaoRoot;
 
-window.initFlexCarousel = () => {
-  const container = document.querySelector('#flex-carousel-root');
-  if (!container || flexRoot) return;
+window.initSessaoButton = () => {
+  const container = document.querySelector('#sessao-button-root');
+  if (!container || sessaoRoot) return;
 
-  flexRoot = createRoot(container);
+  sessaoRoot = createRoot(container);
   flushSync(() => {
-    flexRoot.render(
-      <FlexCarousel
+    sessaoRoot.render(
+      <SpecularButton
+        size="lg"
+        radius={18}
+        tint="#ffffff"
+        tintOpacity={0.04}
+        textColor="#f5f5f5"
+        lineColor="#ffffff"
+        baseColor="#525252"
+        intensity={1}
+        idleIntensity={0.35}
+        shineSize={10}
+        shineFade={34}
+        thickness={1.2}
+        glow={1}
+        followMouse
+        proximity={250}
+        onClick={() => window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer')}
+      >
+        marcar uma sessão
+      </SpecularButton>,
+    );
+  });
+};
+
+window.initTrabalhosCarousel = () => {
+  const container = document.querySelector('#trabalhos-carousel-root');
+  if (!container || trabalhosRoot) return;
+
+  trabalhosRoot = createRoot(container);
+  flushSync(() => {
+    trabalhosRoot.render(
+      <CircularGallery
         items={items}
-        preset="liquid"
-        intro="rise"
-        cardHeight={0.5}
-        gap={14}
-        radius={4}
-        squeeze={0.2}
-        focusOnClick
-        captions
+        bend={3}
+        textColor="#f2f2f2"
+        borderRadius={0.03}
+        gap={0.22}
+        fadeEdges={0.16}
+        shadow={0.35}
         captureWheel={false}
-        className="torus-flex-carousel"
+        showTitles={false}
+        font='400 34px "Bebas Neue", Impact, sans-serif'
+        aria-label="Trabalhos de tatuagem"
+        className="torus-circular-gallery"
         style={{ width: '100%', height: '100%' }}
       />,
     );
@@ -83,6 +119,8 @@ window.initJhowCarousel = () => {
         loop
         showControls
         showIndicators
+        captureWheel={false}
+        onReady={(api) => { window.jhowCarouselApi = api; }}
         className="jhow-depth-carousel"
       />,
     );

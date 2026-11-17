@@ -60,8 +60,83 @@ body.preloader-active {
 	opacity: 0;
 }
 
+.video-section {
+	position: relative;
+	display: grid;
+	min-height: 100svh;
+	padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 9vw, 9rem);
+	place-items: center;
+	overflow: hidden;
+	background: #000;
+}
+
+.video-section__inner {
+	display: grid;
+	width: min(100%, 1320px);
+	grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+	align-items: center;
+	gap: clamp(3rem, 8vw, 8rem);
+}
+
+.video-section__stats {
+	display: grid;
+	gap: clamp(1.5rem, 4vh, 3rem);
+}
+
+.stat__number {
+	display: block;
+	color: #f2f2f2;
+	font-family: "Bebas Neue", Impact, sans-serif;
+	font-size: clamp(4.5rem, 8vw, 7.5rem);
+	font-weight: 400;
+	line-height: 0.85;
+}
+
+.stat__label {
+	margin: 0.6rem 0 0;
+	color: #96999d;
+	font-size: 0.66rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+}
+
+.video-section__stage {
+	width: 100%;
+	max-width: 560px;
+	aspect-ratio: 1;
+	justify-self: end;
+}
+
+.video-section__media {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+@media (max-width: 700px) {
+	.video-section__inner {
+		grid-template-columns: 1fr;
+		gap: 3rem;
+	}
+
+	.video-section__stage {
+		justify-self: center;
+	}
+}
+
+.bottom-fade {
+	position: fixed;
+	inset: auto 0 0;
+	z-index: 50;
+	height: clamp(50px, 6vh, 90px);
+	background: linear-gradient(to top, #0a0a0a 0%, rgba(10, 10, 10, 0.72) 40%, rgba(10, 10, 10, 0) 100%);
+	pointer-events: none;
+}
+
 .hero {
 	position: relative;
+	z-index: 1;
 	display: grid;
 	min-height: 100svh;
 	place-items: center;
@@ -73,27 +148,46 @@ body.preloader-active {
 .hero__word-wrap {
 	position: relative;
 	z-index: 1;
-	width: min(100%, 1500px);
+	display: flex;
+	width: 100%;
+	justify-content: center;
 	overflow: hidden;
 }
 
 .hero__word {
+	position: relative;
+	display: flex;
 	width: 100%;
-}
-
-.hero__title-art {
-	display: block;
-	width: 100%;
-	height: auto;
+	justify-content: center;
 	transform: translateY(48px);
 	clip-path: inset(100% 0 0);
 	will-change: clip-path, transform;
 }
 
-.hero__signature,
+.hero__title-art {
+	display: block;
+	width: auto;
+	max-width: 100%;
+	max-height: 100vh;
+	height: auto;
+}
+
+.hero__title-art:not(:first-child) {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}
+
+.hero__title-art.is-active {
+	opacity: 1;
+}
+
 .hero__scroll,
 .arc-carousel__heading p,
-.arc-carousel__index,
 .about__eyebrow,
 .about__signature {
 	font-size: 0.66rem;
@@ -101,16 +195,6 @@ body.preloader-active {
 	letter-spacing: 0.16em;
 }
 
-.hero__signature {
-	position: absolute;
-	z-index: 2;
-	top: 2.25rem;
-	left: 3rem;
-	margin: 0;
-	color: #a4a6a9;
-}
-
-.hero__signature span,
 .arc-carousel__heading p span,
 .about__signature span {
 	color: #c4c7cb;
@@ -143,6 +227,7 @@ body.preloader-active {
 
 .arc-carousel {
 	position: relative;
+	z-index: 2;
 	height: 100svh;
 	overflow: hidden;
 	background: #111;
@@ -189,16 +274,9 @@ body.preloader-active {
 	color: #f2f2f2;
 }
 
-.flex-carousel {
-	color: #f2f2f2;
-}
-
-.flex-carousel__caption {
-	color: #d7d9dc;
-}
-
 .about {
 	position: relative;
+	z-index: 3;
 	min-height: 100svh;
 	padding: clamp(5rem, 11vw, 10rem) clamp(1.5rem, 9vw, 9rem);
 	overflow: hidden;
@@ -231,6 +309,7 @@ body.preloader-active {
 
 .about__copy {
 	max-width: 500px;
+	transform: translateY(-36px);
 }
 
 .about__eyebrow {
@@ -257,12 +336,44 @@ body.preloader-active {
 
 .about__bio {
 	max-width: 34rem;
-	margin: 2.5rem 0;
+	margin: 1.75rem 0 0;
 	color: #b4b6b9;
 	font-size: clamp(1rem, 1.2vw, 1.15rem);
 	line-height: 1.9;
 	opacity: 0;
 	transform: translateY(24px);
+}
+
+.about__cta {
+	margin: 1.5rem 0 1.5rem;
+	opacity: 0;
+	transform: translateY(20px);
+}
+
+.about__instagram {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	width: fit-content;
+	margin: 0 0 1.5rem;
+	color: #e8e9ea;
+	font-size: 0.82rem;
+	letter-spacing: 0.16em;
+	text-decoration: none;
+	opacity: 0;
+	transform: translateY(20px);
+	transition: color 0.25s ease;
+}
+
+.about__instagram svg {
+	flex: none;
+	color: #aeb1b5;
+	transition: color 0.25s ease;
+}
+
+.about__instagram:hover,
+.about__instagram:hover svg {
+	color: #fff;
 }
 
 .about__signature {
@@ -273,11 +384,6 @@ body.preloader-active {
 }
 
 @media (max-width: 700px) {
-	.hero__signature {
-		top: 1.5rem;
-		left: 1.25rem;
-	}
-
 	.hero__scroll {
 		right: 1.25rem;
 		bottom: 1.5rem;
@@ -327,9 +433,17 @@ body.preloader-active {
 		transform: none !important;
 	}
 
-	.hero__title-art {
+	.hero__word {
 		clip-path: none !important;
 		transform: none !important;
+	}
+
+	.hero__title-art:not(:first-child) {
+		opacity: 0 !important;
+	}
+
+	.hero__title-art.is-active {
+		opacity: 1 !important;
 	}
 
 	.hero__shade {
@@ -343,6 +457,8 @@ body.preloader-active {
 	.about__eyebrow,
 	.about__copy h2,
 	.about__bio,
+	.about__cta,
+	.about__instagram,
 	.about__signature {
 		opacity: 1 !important;
 		transform: none !important;
