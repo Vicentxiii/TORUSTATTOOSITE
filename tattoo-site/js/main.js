@@ -4,6 +4,25 @@ import { createFramePlayer } from './framePlayer.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Frames do scrub da quarta sessão. Precisam ser importados para que o Vite
+// os copie para o dist: um caminho literal como "assets/video-frames-hd/..."
+// funciona no dev server, mas no deploy esses arquivos não existem (404).
+// O Vite exige string literal direta em import.meta.glob (não pode vir de
+// variável), por isso os dois globs são escritos separadamente.
+const hdFrameModules = import.meta.glob('../assets/video-frames-hd/*.webp', {
+	eager: true, query: '?url', import: 'default',
+});
+const mobileFrameModules = import.meta.glob('../assets/video-frames-mobile/*.webp', {
+	eager: true, query: '?url', import: 'default',
+});
+
+const sortFrames = (modules) => Object.entries(modules)
+	.sort(([first], [second]) => first.localeCompare(second))
+	.map(([, url]) => url);
+
+const hdFrames = sortFrames(hdFrameModules);
+const mobileFrames = sortFrames(mobileFrameModules);
+
 // Capas do TORUS: "novo" primeiro, depois as numeradas (2, 3, 4...).
 const coverModules = import.meta.glob('/assets/TITULO DA HERO*.png', {
 	eager: true,
@@ -45,7 +64,7 @@ function finishPreloader(preloader, site) {
 		if (video) {
 			const poster = document.createElement("img");
 			poster.className = "video-section__media";
-			poster.src = "assets/video-frames-hd/f_0001.webp";
+			poster.src = hdFrames[0] || "";
 			poster.alt = "";
 			video.replaceWith(poster);
 		}
@@ -237,9 +256,12 @@ function initVideoScroll() {
 	const video = section?.querySelector(".video-section__media");
 	if (!section || !video) return;
 
-	const FRAME_COUNT = 190;
-	const canUseFrames = typeof createImageBitmap === "function" && typeof fetch === "function";
 	const isMobile = window.matchMedia("(max-width: 768px)").matches;
+	const frames = isMobile && mobileFrames.length ? mobileFrames : hdFrames;
+	const FRAME_COUNT = frames.length;
+	const canUseFrames = FRAME_COUNT > 0
+		&& typeof createImageBitmap === "function"
+		&& typeof fetch === "function";
 	let seek;
 
 	if (canUseFrames) {
@@ -255,7 +277,7 @@ function initVideoScroll() {
 		const player = createFramePlayer({
 			canvas,
 			frameCount: FRAME_COUNT,
-			getSrc: (index) => `assets/video-frames-${isMobile ? "mobile" : "hd"}/f_${String(index + 1).padStart(4, "0")}.webp`,
+			getSrc: (index) => frames[index],
 			windowSize: isMobile ? 5 : 8,
 		});
 		seek = (progress) => player.setProgress(progress);

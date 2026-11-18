@@ -2,13 +2,16 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import gsap from 'gsap';
 import DitherVeil from './components/DitherVeil.jsx';
+// Importar a imagem (em vez de usar um caminho literal) faz o Vite copeá-la
+// para o dist com hash — sem isso o arquivo não existe no deploy.
+import heroImage from '../assets/Hero com efeito para  a  galeria 3 .png';
 
 // --- HERO com efeito DitherVeil (revela a arte ao passar o cursor) ---
 const heroRoot = document.getElementById('dither-hero');
 if (heroRoot) {
   createRoot(heroRoot).render(
     React.createElement(DitherVeil, {
-      src: '/assets/Hero com efeito para  a  galeria 3 .png',
+      src: heroImage,
       fit: 'cover',
       pattern: 'atkinson',
       pixelSize: 2,
