@@ -1,0 +1,294 @@
+:root {
+	--font-display: "Bebas Neue", Impact, sans-serif;
+	--font-body: "Poppins", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: auto; }
+
+body {
+	margin: 0;
+	background: #080706;
+	color: #f2eee7;
+	font-family: var(--font-body);
+	overflow-x: hidden;
+}
+
+/* --- HERO com DitherVeil --- */
+.gallery-hero {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	height: 100svh;
+	overflow: hidden;
+	background: #0d0b09;
+}
+
+.gallery-hero__veil {
+	position: absolute;
+	inset: 0;
+}
+
+.gallery-hero__content {
+	position: absolute;
+	z-index: 2;
+	left: clamp(1.5rem, 6vw, 6rem);
+	bottom: clamp(4rem, 12vh, 8rem);
+	pointer-events: none;
+}
+
+.gallery-hero__eyebrow {
+	margin: 0 0 0.75rem;
+	color: #d0d0d0;
+	font-size: 0.66rem;
+	letter-spacing: 0.22em;
+}
+
+.gallery-hero__title {
+	margin: 0;
+	color: #fff;
+	font-family: var(--font-display);
+	font-size: clamp(5rem, 16vw, 15rem);
+	font-weight: 400;
+	line-height: 0.8;
+	letter-spacing: 0.02em;
+}
+
+.gallery-hero__hint {
+	margin: 1.25rem 0 0;
+	color: #b0b0b0;
+	font-size: 0.75rem;
+	letter-spacing: 0.08em;
+}
+
+.gallery-hero__hint span { color: #fff; }
+
+.gallery-hero__scroll {
+	position: absolute;
+	z-index: 2;
+	right: clamp(1.5rem, 6vw, 6rem);
+	bottom: clamp(2rem, 5vh, 3rem);
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+	color: #7b7163;
+	font-size: 0.6rem;
+	letter-spacing: 0.2em;
+	pointer-events: none;
+}
+
+.gallery-hero__scroll span { color: #fff; font-size: 1rem; }
+
+.museum { position: relative; }
+
+.museum__header {
+	position: absolute;
+	z-index: 20;
+	top: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: clamp(1.25rem, 3vw, 2.5rem) clamp(1.5rem, 5vw, 5rem);
+	pointer-events: none;
+}
+
+.museum__back {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	color: #b0b0b0;
+	font-size: 0.7rem;
+	letter-spacing: 0.18em;
+	text-decoration: none;
+	pointer-events: auto;
+	transition: color 0.25s ease;
+}
+
+.museum__back svg { width: 1.1rem; height: 1.1rem; }
+.museum__back:hover { color: #fff; }
+
+.museum__eyebrow {
+	margin: 0;
+	color: #6a6a6a;
+	font-size: 0.62rem;
+	letter-spacing: 0.22em;
+}
+
+.museum__count {
+	margin: 0;
+	color: #8a8a8a;
+	font-size: 0.62rem;
+	letter-spacing: 0.18em;
+}
+
+.museum__count span {
+	color: #fff;
+	font-family: var(--font-display);
+	font-size: 1.1rem;
+}
+
+/* Galeria: fundo preto, rolagem normal vertical. */
+.museum__viewport {
+	position: relative;
+	width: 100%;
+	isolation: isolate;
+	background: #000;
+}
+
+/* --- Filtros por tag (preto e branco) --- */
+.gallery-filters {
+	position: sticky;
+	z-index: 10;
+	top: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 1.25rem 1.5rem;
+	background: rgba(0, 0, 0, 0.9);
+	backdrop-filter: blur(8px);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gallery-filter {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	padding: 0.55rem 1.1rem;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 100px;
+	background: transparent;
+	color: #a0a0a0;
+	font-family: var(--font-body);
+	font-size: 0.72rem;
+	letter-spacing: 0.06em;
+	cursor: pointer;
+	transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.gallery-filter span {
+	color: #707070;
+	font-family: var(--font-display);
+	font-size: 0.95rem;
+}
+
+.gallery-filter:hover {
+	color: #fff;
+	border-color: rgba(255, 255, 255, 0.6);
+}
+
+.gallery-filter.is-active {
+	background: #fff;
+	border-color: #fff;
+	color: #000;
+	font-weight: 600;
+}
+
+.gallery-filter.is-active span { color: rgba(0, 0, 0, 0.55); }
+
+/* --- Grade vertical minimalista: 1px entre imagens --- */
+.gallery-window {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+}
+
+.gallery-track {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1px;
+	width: 100%;
+	background: #fff;
+}
+
+.gallery-card {
+	position: relative;
+	margin: 0;
+	overflow: hidden;
+	background: #000;
+}
+
+.gallery-card__media {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 3 / 4;
+	overflow: hidden;
+	background: #0a0a0a;
+}
+
+.gallery-card__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+}
+
+.gallery-card:hover .gallery-card__media img,
+.gallery-card.is-tapped .gallery-card__media img {
+	opacity: 0.45;
+	transform: scale(1.03);
+}
+
+/* Botão "marcar sessão" só aparece no hover / toque. */
+.gallery-card__book {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -45%);
+	padding: 0.85rem 1.6rem;
+	border: 1px solid #fff;
+	background: #fff;
+	color: #000;
+	font-family: var(--font-body);
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	white-space: nowrap;
+	cursor: pointer;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease, transform 0.3s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.gallery-card:hover .gallery-card__book,
+.gallery-card.is-tapped .gallery-card__book {
+	opacity: 1;
+	transform: translate(-50%, -50%);
+	pointer-events: auto;
+}
+
+.gallery-card__book:hover {
+	background: #000;
+	color: #fff;
+}
+
+/* Fade preto fixo no rodapé, presente durante todo o scroll. */
+.gallery-bottom-fade {
+	position: fixed;
+	z-index: 50;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: clamp(50px, 8vh, 110px);
+	background: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.72) 40%, rgba(0, 0, 0, 0) 100%);
+	pointer-events: none;
+}
+
+@media (max-width: 700px) {
+	.gallery-filters {
+		justify-content: flex-start;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		padding: 1rem 1.25rem;
+		scrollbar-width: none;
+	}
+
+	.gallery-filters::-webkit-scrollbar { display: none; }
+	.gallery-filter { flex: none; }
+
+	.gallery-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

@@ -1,3 +1,8 @@
+:root {
+	--font-display: "Bebas Neue", Impact, sans-serif;
+	--font-body: "Poppins", Arial, sans-serif;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -6,7 +11,7 @@ body {
 	margin: 0;
 	background: #0a0a0a;
 	color: #f2f2f2;
-	font-family: Arial, sans-serif;
+	font-family: var(--font-body);
 }
 
 body.preloader-active {
@@ -44,7 +49,8 @@ body.preloader-active {
 .preloader__counter {
 	min-width: 3ch;
 	color: #f2f2f2;
-	font-size: 0.75rem;
+	font-family: var(--font-display);
+	font-size: 1.1rem;
 	font-variant-numeric: tabular-nums;
 	text-align: center;
 }
@@ -70,44 +76,108 @@ body.preloader-active {
 	background: #000;
 }
 
+.video-section::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background: url('../assets/fundo-quarta-sessao.webp') center / cover no-repeat;
+	opacity: 0.2;
+	pointer-events: none;
+}
+
 .video-section__inner {
+	position: relative;
+	z-index: 1;
 	display: grid;
 	width: min(100%, 1320px);
-	grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
-	align-items: center;
-	gap: clamp(3rem, 8vw, 8rem);
+	grid-template-columns: 1fr;
+	justify-items: center;
+	gap: clamp(2rem, 5vh, 3.5rem);
 }
 
 .video-section__stats {
 	display: grid;
-	gap: clamp(1.5rem, 4vh, 3rem);
+	width: 100%;
+	gap: clamp(1.25rem, 3vh, 2rem);
+}
+
+.stats__heading {
+	margin: 0;
+	color: #b4b6b9;
+	font-family: var(--font-display);
+	font-size: clamp(1.4rem, 2vw, 1.9rem);
+	font-weight: 400;
+	letter-spacing: 0.02em;
+}
+
+.stats__row {
+	display: grid;
+	width: 100%;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	align-items: start;
+}
+
+.stat {
+	position: relative;
+	padding-left: clamp(1.25rem, 3vw, 3rem);
+}
+
+.stat:first-child {
+	padding-left: 0;
+}
+
+.stat + .stat {
+	border-left: 1px solid #343638;
+}
+
+.stat + .stat::before {
+	content: '';
+	position: absolute;
+	top: 0.45rem;
+	left: -2.5px;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: #9a9da1;
 }
 
 .stat__number {
 	display: block;
 	color: #f2f2f2;
-	font-family: "Bebas Neue", Impact, sans-serif;
-	font-size: clamp(4.5rem, 8vw, 7.5rem);
+	font-family: var(--font-display);
+	font-size: clamp(3.5rem, 6vw, 5.5rem);
 	font-weight: 400;
 	line-height: 0.85;
+	white-space: nowrap;
 }
 
-.stat__label {
-	margin: 0.6rem 0 0;
-	color: #96999d;
-	font-size: 0.66rem;
-	font-weight: 500;
-	letter-spacing: 0.16em;
+.stat__title {
+	margin: 0.9rem 0 0;
+	color: #e8e9ea;
+	font-size: clamp(0.8rem, 1.1vw, 1rem);
+	font-weight: 700;
 }
+
+.stat__desc {
+	margin: 0.3rem 0 0;
+	color: #777a7e;
+	font-size: clamp(0.66rem, 0.85vw, 0.78rem);
+	line-height: 1.5;
+}
+
 
 .video-section__stage {
-	width: 100%;
-	max-width: 560px;
+	position: relative;
+	width: min(100%, 42vh);
+	max-width: 480px;
 	aspect-ratio: 1;
-	justify-self: end;
+	justify-self: center;
 }
 
 .video-section__media {
+	position: relative;
+	z-index: 1;
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -245,6 +315,18 @@ body.preloader-active {
 	background: radial-gradient(ellipse at 50% 100%, #202123 0%, #111 64%);
 }
 
+.arc-carousel__stage::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url('../assets/Logo%20Torus%20Tattoo%20em%20M%C3%A1quina%20de%20Tatuagem.png');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	opacity: 0.2;
+	pointer-events: none;
+}
+
 .arc-carousel__heading {
 	position: absolute;
 	z-index: 2;
@@ -260,7 +342,7 @@ body.preloader-active {
 .arc-carousel__heading h2 {
 	margin: 0;
 	color: #f2f2f2;
-	font-family: "Bebas Neue", Impact, sans-serif;
+	font-family: var(--font-display);
 	font-size: clamp(2.5rem, 5vw, 5rem);
 	font-weight: 400;
 	line-height: 0.9;
@@ -274,6 +356,11 @@ body.preloader-active {
 	color: #f2f2f2;
 }
 
+.about-pin {
+	position: relative;
+	z-index: 3;
+}
+
 .about {
 	position: relative;
 	z-index: 3;
@@ -283,7 +370,22 @@ body.preloader-active {
 	background: #0a0a0a;
 }
 
+.about::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url('../assets/Logo%20Torus%20Tattoo%20em%20Conjunto%20de%20Utensilios%20de%20Tatuagem.png');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	opacity: 0.1;
+	pointer-events: none;
+	z-index: 0;
+}
+
 .about__inner {
+	position: relative;
+	z-index: 1;
 	display: grid;
 	width: min(100%, 1320px);
 	min-height: 65vh;
@@ -322,7 +424,7 @@ body.preloader-active {
 .about__copy h2 {
 	margin: 0 0 1.5rem;
 	color: #f2f2f2;
-	font-family: "Bebas Neue", Impact, sans-serif;
+	font-family: var(--font-display);
 	font-size: clamp(5rem, 12vw, 10rem);
 	font-weight: 400;
 	line-height: 0.8;
@@ -383,6 +485,141 @@ body.preloader-active {
 	transform: translateY(20px);
 }
 
+.how-section {
+	position: relative;
+	z-index: 4;
+	padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 6vw, 6rem);
+	background: #151515;
+	overflow: hidden;
+}
+
+.how-section__foot-bg {
+	position: absolute;
+	z-index: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: clamp(460px, 78vh, 900px);
+	background: url('../assets/rodape-como-funciona-2.webp') center bottom / 100% auto no-repeat;
+	mix-blend-mode: multiply;
+	opacity: 0.85;
+	transform: translateY(6%);
+	-webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%);
+	mask-image: linear-gradient(to bottom, transparent 0%, #000 28%);
+	pointer-events: none;
+}
+
+.how-section__foot-bg::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 0;
+	height: 32%;
+	background: linear-gradient(to bottom, transparent, #151515 92%);
+	pointer-events: none;
+}
+
+.how-section__inner {
+	position: relative;
+	z-index: 1;
+	width: min(100%, 1180px);
+	margin: 0 auto;
+}
+
+.how-section__head h2,
+.how-section__foot h2 {
+	margin: 0 0 1rem;
+	color: #f2f2f2;
+	font-family: var(--font-display);
+	font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+	font-weight: 400;
+	letter-spacing: 0.01em;
+	line-height: 1;
+}
+
+.how-section__head p {
+	max-width: 470px;
+	margin: 0;
+	color: #96999d;
+	font-size: 0.82rem;
+	line-height: 1.75;
+}
+
+.how-steps {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: clamp(1.25rem, 2.5vw, 2.5rem);
+	align-items: start;
+	margin: clamp(3.5rem, 8vh, 6.5rem) 0;
+}
+
+.how-step:nth-child(odd) {
+	margin-top: 4rem;
+}
+
+.how-step__media {
+	display: block;
+	width: 100%;
+	aspect-ratio: 3 / 4;
+	object-fit: cover;
+	background: #202020;
+}
+
+.how-step h3 {
+	margin: 1rem 0 0.55rem;
+	color: #f2f2f2;
+	font-family: var(--font-display);
+	font-size: 1.35rem;
+	font-weight: 400;
+	letter-spacing: 0.02em;
+}
+
+.how-step p {
+	margin: 0;
+	color: #9a9da1;
+	font-size: 0.78rem;
+	line-height: 1.7;
+}
+
+.how-section__foot {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 2rem;
+	padding-top: clamp(3rem, 7vh, 5rem);
+}
+
+.how-section__foot h2 {
+	margin-bottom: 0.75rem;
+}
+
+.how-section__foot-copy p {
+	max-width: 380px;
+	margin: 0;
+	color: #96999d;
+	font-size: 0.8rem;
+	line-height: 1.7;
+}
+
+.how-section__cta {
+	flex: none;
+}
+
+.how-section__cta .star-border {
+	font-size: 0.8rem;
+	letter-spacing: 0.02em;
+}
+
+.galeria-arrow {
+	width: 1em;
+	height: 1em;
+	flex: none;
+	transition: transform 0.25s ease;
+}
+
+.how-section__cta .star-border:hover .galeria-arrow {
+	transform: translate(2px, -2px);
+}
+
 @media (max-width: 700px) {
 	.hero__scroll {
 		right: 1.25rem;
@@ -416,6 +653,59 @@ body.preloader-active {
 
 	.about__copy h2 {
 		font-size: clamp(5rem, 24vw, 8rem);
+	}
+
+	.stats__row {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2.25rem 0;
+	}
+
+	.stats__row .stat {
+		padding-left: 0;
+		border-left: 0;
+	}
+
+	.stat + .stat::before {
+		display: none;
+	}
+
+	.stat:nth-child(n + 3) {
+		padding-top: 1.5rem;
+		border-top: 1px solid #343638;
+	}
+
+	.stat__number {
+		font-size: 3.2rem;
+	}
+
+	.video-section__stage {
+		width: min(100%, 34vh);
+	}
+
+	.video-section::before {
+		background-size: 100% auto;
+		background-position: center 45%;
+	}
+
+	.how-steps {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2.5rem 1.25rem;
+	}
+
+	.how-step:nth-child(odd) {
+		margin-top: 0;
+	}
+
+	.how-section__foot {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+@media (max-width: 480px) {
+	.how-steps {
+		grid-template-columns: 1fr;
+		gap: 2.75rem;
 	}
 }
 

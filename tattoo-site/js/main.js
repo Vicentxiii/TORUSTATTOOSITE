@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { createFramePlayer } from './framePlayer.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,6 +35,20 @@ function finishPreloader(preloader, site) {
 		window.initTrabalhosCarousel?.();
 		window.initJhowCarousel?.();
 		window.initSessaoButton?.();
+		window.initGaleriaButton?.();
+		// Sem animação, exibe os valores finais das estatísticas.
+		site.querySelectorAll(".stat__number").forEach((element) => {
+			element.textContent = `${element.dataset.target || 0}${element.dataset.suffix || ""}`;
+		});
+		// Sem animação, mostra um frame estático em vez do vídeo sem carregar.
+		const video = site.querySelector(".video-section__media");
+		if (video) {
+			const poster = document.createElement("img");
+			poster.className = "video-section__media";
+			poster.src = "assets/video-frames-hd/f_0001.webp";
+			poster.alt = "";
+			video.replaceWith(poster);
+		}
 		return;
 	}
 
@@ -42,6 +57,7 @@ function finishPreloader(preloader, site) {
 	window.initTrabalhosCarousel?.();
 	window.initJhowCarousel?.();
 	window.initSessaoButton?.();
+	window.initGaleriaButton?.();
 	initAbout();
 	initAboutScroll();
 	initVideoScroll();
@@ -58,6 +74,10 @@ function initLenis() {
 	lenis.on("scroll", ScrollTrigger.update);
 	gsap.ticker.add((time) => lenis.raf(time * 1000));
 	gsap.ticker.lagSmoothing(0);
+
+	// Os pins adicionam altura ao documento. Sem avisar o Lenis, o limite de
+	// scroll fica desatualizado e a rolagem "trava" ao entrar nas seções fixas.
+	ScrollTrigger.addEventListener("refresh", () => lenis?.resize());
 }
 
 const HERO_PIN_RATIO = 0.6;
@@ -193,7 +213,10 @@ function initAboutScroll() {
 		ScrollTrigger.create({
 			trigger: ".arc-carousel",
 			start: "bottom top",
-			pin: about,
+			// Pin no wrapper: a .about continua animando via transform (y).
+			// Pinar o mesmo elemento que recebe o transform causa o pulo na
+			// saída do pin, onde a seção reaparece.
+			pin: ".about-pin",
 			end: () => `+=${window.innerHeight * (api.count - 1) * 0.5}`,
 			anticipatePin: 1,
 			invalidateOnRefresh: true,
@@ -214,14 +237,61 @@ function initVideoScroll() {
 	const video = section?.querySelector(".video-section__media");
 	if (!section || !video) return;
 
-	// O quadro do vídeo acompanha o scroll, sem girar e sem autoplay.
-	const seek = (progress) => {
-		const duration = Number.isFinite(video.duration) ? video.duration : 0;
-		if (!duration) return;
-		video.currentTime = Math.max(0, Math.min(1, progress)) * Math.max(0, duration - 0.05);
-	};
-	if (video.readyState >= 1) seek(0);
-	else video.addEventListener("loadedmetadata", () => seek(0), { once: true });
+	const FRAME_COUNT = 190;
+	const canUseFrames = typeof createImageBitmap === "function" && typeof fetch === "function";
+	const isMobile = window.matchMedia("(max-width: 768px)").matches;
+	let seek;
+
+	if (canUseFrames) {
+		// Sequência de imagens: sem decoder de vídeo, sem currentTime, sem engasgo.
+		// Em mobile usa frames menores (640x360) e janela de decode mais curta.
+		const canvas = document.createElement("canvas");
+		canvas.className = "video-section__media";
+		canvas.setAttribute("aria-hidden", "true");
+		canvas.width = isMobile ? 640 : 960;
+		canvas.height = isMobile ? 360 : 540;
+		video.replaceWith(canvas);
+
+		const player = createFramePlayer({
+			canvas,
+			frameCount: FRAME_COUNT,
+			getSrc: (index) => `assets/video-frames-${isMobile ? "mobile" : "hd"}/f_${String(index + 1).padStart(4, "0")}.webp`,
+			windowSize: isMobile ? 5 : 8,
+		});
+		seek = (progress) => player.setProgress(progress);
+		seek(0);
+	} else {
+		// Fallback para browsers sem createImageBitmap: seek no vídeo, agrupado
+		// em rAF e limitado a um seek por vez para não travar o decodificador.
+		video.preload = "auto";
+		video.load();
+		let seekFrame = 0;
+		let lastTarget = -1;
+		let seeking = false;
+
+		const applySeek = () => {
+			seekFrame = 0;
+			if (seeking || Math.abs(lastTarget - video.currentTime) < 0.02) return;
+			seeking = true;
+			video.currentTime = lastTarget;
+		};
+
+		video.addEventListener("seeked", () => {
+			seeking = false;
+			if (Math.abs(lastTarget - video.currentTime) >= 0.06) applySeek();
+		});
+
+		seek = (progress) => {
+			const duration = Number.isFinite(video.duration) ? video.duration : 0;
+			if (!duration) return;
+			const target = Math.max(0, Math.min(1, progress)) * Math.max(0, duration - 0.05);
+			if (Math.abs(target - lastTarget) < 0.02) return;
+			lastTarget = target;
+			if (!seekFrame && !seeking) seekFrame = requestAnimationFrame(applySeek);
+		};
+		if (video.readyState >= 1) seek(0);
+		else video.addEventListener("loadedmetadata", () => seek(0), { once: true });
+	}
 
 	const stats = Array.from(section.querySelectorAll(".stat__number"));
 	const timeline = gsap.timeline({
@@ -230,7 +300,7 @@ function initVideoScroll() {
 			start: "top top",
 			end: "+=100%",
 			pin: true,
-			scrub: 1,
+			scrub: 0.8,
 			invalidateOnRefresh: true,
 			onUpdate: (self) => seek(self.progress),
 		},

@@ -4,20 +4,22 @@ import { flushSync } from 'react-dom';
 import CircularGallery from './components/CircularGallery.jsx';
 import DepthCarousel from './components/DepthCarousel.jsx';
 import SpecularButton from './components/SpecularButton.jsx';
+import StarBorder from './components/StarBorder.jsx';
 import jhowPortrait from '../assets/Foto do Jhow para Bio.png';
 import jhowSeated from '../assets/Foto do Jhow para Bio 2 .png';
 import jhowCloseup from '../assets/Foto do Jhow para Bio 3 .png';
 
 const WHATSAPP_URL = `https://wa.me/5511985545833?text=${encodeURIComponent('Olá Jow, vim pelo seu site, eu curti muitos seus trabalhos, podemos marcar um horário?')}`;
 
-const imageModules = import.meta.glob('/assets/*.{jpg,jpeg,png,webp,avif}', {
+// A galeria lê APENAS esta pasta. Qualquer imagem nova colocada em /assets
+// fora dela nunca aparece em TRABALHOS — sem precisar de lista de exclusão.
+const imageModules = import.meta.glob('/assets/trabalhos/*.{jpg,jpeg,png,webp,avif}', {
   eager: true,
   query: '?url',
   import: 'default',
 });
 
 const items = Object.entries(imageModules)
-  .filter(([path]) => !path.includes('Foto do Jhow para Bio') && !path.includes('TITULO DA HERO') && !path.includes('Nova Capa do site'))
   .sort(([first], [second]) => first.localeCompare(second, 'pt-BR'))
   .map(([path, src], index) => ({
     image: src,
@@ -34,6 +36,41 @@ const jhowPhotos = [
 let trabalhosRoot;
 let jhowRoot;
 let sessaoRoot;
+let galeriaRoot;
+
+window.initGaleriaButton = () => {
+  const container = document.querySelector('#galeria-button-root');
+  if (!container || galeriaRoot) return;
+
+  galeriaRoot = createRoot(container);
+  flushSync(() => {
+    galeriaRoot.render(
+      <StarBorder
+        as="a"
+        href="/galeria"
+        color="#ffffff"
+        trailColor="#ffffff"
+        duration={4}
+        direction="clockwise"
+        stars={1}
+        trailLength={0.3}
+        thickness={1}
+        radius={6}
+        glow={0.6}
+        hover="lap"
+        sparkle={false}
+        clickPulse
+        theme="dark"
+      >
+        Entrar na galeria
+        <svg className="galeria-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M7 17L17 7" />
+          <path d="M8 7h9v9" />
+        </svg>
+      </StarBorder>,
+    );
+  });
+};
 
 window.initSessaoButton = () => {
   const container = document.querySelector('#sessao-button-root');
