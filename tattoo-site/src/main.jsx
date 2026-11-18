@@ -1,14 +1,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import CircularCarousel from './components/CircularCarousel.jsx';
-import trabalho01 from '../assets/Galeria/Ave maria realismo preto e branco.jpg';
-import trabalho02 from '../assets/Galeria/Caveira indio realismo.jpg';
-import trabalho03 from '../assets/Galeria/Coringa realismo preto e branco.jpg';
-import trabalho04 from '../assets/Galeria/Fine line garota pinup.jpg';
-import trabalho05 from '../assets/Galeria/Gato fine line com surrealismo.jpg';
-import trabalho06 from '../assets/Galeria/Leao realismo.jpg';
-import trabalho07 from '../assets/Galeria/Lobo e mulher realismo colorido.jpg';
+import DepoimentosCarousel from './components/DepoimentosCarousel.jsx';
+import depoimento01 from '../assets/DEPOIMENTOS/Gabriel Souza.png';
+import depoimento02 from '../assets/DEPOIMENTOS/Lana fontes.png';
+import depoimento03 from '../assets/DEPOIMENTOS/Lucas Germano.png';
+import depoimento04 from '../assets/DEPOIMENTOS/Luciana Brasil.png';
+import depoimento05 from '../assets/DEPOIMENTOS/Michel vaz.png';
+import depoimento06 from '../assets/DEPOIMENTOS/Raquel e Luiz.png';
+import depoimento07 from '../assets/DEPOIMENTOS/Roberto Cruz.png';
 import DepthCarousel from './components/DepthCarousel.jsx';
 import SpecularButton from './components/SpecularButton.jsx';
 import StarBorder from './components/StarBorder.jsx';
@@ -18,16 +18,50 @@ import jhowCloseup from '../assets/Foto do Jhow para Bio 3 .png';
 
 const WHATSAPP_URL = `https://wa.me/5511985545833?text=${encodeURIComponent('Olá Jow, vim pelo seu site, eu curti muitos seus trabalhos, podemos marcar um horário?')}`;
 
-// Itens do carrossel da seção TRABALHOS. Por enquanto são 6 fotos de
-// exemplo — para virar depoimentos, é só trocar src/title/subtitle aqui.
-const items = [
-  { src: trabalho01, alt: 'Tatuagem realismo em preto e branco', title: 'Trabalho 01', subtitle: 'Realismo' },
-  { src: trabalho02, alt: 'Tatuagem de caveira indígena', title: 'Trabalho 02', subtitle: 'Realismo' },
-  { src: trabalho03, alt: 'Tatuagem do Coringa em preto e branco', title: 'Trabalho 03', subtitle: 'Realismo' },
-  { src: trabalho04, alt: 'Tatuagem fine line de garota pin-up', title: 'Trabalho 04', subtitle: 'Fine line' },
-  { src: trabalho05, alt: 'Tatuagem fine line de gato surrealista', title: 'Trabalho 05', subtitle: 'Fine line' },
-  { src: trabalho06, alt: 'Tatuagem realista de leão', title: 'Trabalho 06', subtitle: 'Realismo' },
-  { src: trabalho07, alt: 'Tatuagem realista colorida de lobo e mulher', title: 'Trabalho 07', subtitle: 'Colorido' },
+// Depoimentos da seção DEPOIMENTOS. `preview` aparece no card e `full` no modal.
+const depoimentos = [
+  {
+    name: 'Gabriel Souza',
+    photo: depoimento01,
+    preview: 'Sou amigo do Jhow faz anos, acompanhei ele desde o início. O traço dele evoluiu demais, hj é outro nível.',
+    full: 'Cara, sou amigo do Jhow faz tempo, acompanhei ele desde quando ele ainda tava começando, na garagem de casa mesmo. Vi a evolução do cara de perto, sério, o traço dele hj é outro nível. Fiz o braço todo com ele e até hj o pessoal para na rua pra perguntar quem fez kkk. Vlw Jhow, tu é foda. Torus é o único lugar q eu indico pra quem me pergunta, sem medo.',
+  },
+  {
+    name: 'Lana fontes',
+    photo: depoimento02,
+    preview: 'Cai no site da Torus pelo google e fiquei viciada nos trabalhos. Mandei msg no zap e já marcamos.',
+    full: 'Na real tava só matando tempo no cel e caí no site da Torus. Abri a galeria e fiquei igual doida olhando as foto, fiquei mt tempo lá kkk. Nem pensei 2x, mandei msg no zap msm. O Jhow respondeu rapidinho e me explicou tudo certinho, sem enrolação. Fiz uma fine line na costela e saí de lá encantada. Recomendo demais, sério, n é papo não.',
+  },
+  {
+    name: 'Lucas Germano',
+    photo: depoimento03,
+    preview: 'Amigo próximo do Jhow faz anos. Vi ele crescer na arte e hoje não perco uma sessão na Torus.',
+    full: 'Eu e o Jhow somos amigos próximos faz anos, fomos vizinhos na época da escola. Acompanhei ele desde o primeiro aparelho q ele comprou, vi ele treinar em papel, vi ele melhorar, vi a Torus nascer. Hoje o cara é monstro, não tem como negar. Já fiz umas 4 e todas ficaram impecáveis. Se alguém me pergunta onde tatuar, eu falo: vai na Torus e não erra.',
+  },
+  {
+    name: 'Luciana Brasil',
+    photo: depoimento04,
+    preview: 'Fui indicada por uma amiga que já tatuou com o Jhow. Superou tudo o que ela me falou.',
+    full: 'Fui indicada por uma amiga, ela fez uma tatuagem com o Jhow e não parava de elogiar. Fui confiando e olha, superou o q ela falou. O atendimento é mt tranquilo, o cara explica tudo, não faz aquela pressão de querer logo. Fiz uma costela e doeu mt pouco, juro kkk. Só tenho q agradecer, vlw Jhow e vlw Torus.',
+  },
+  {
+    name: 'Michel vaz',
+    photo: depoimento05,
+    preview: 'Entrei no site da Torus e fiquei de queixo caído com os trabalhos. Realismo do cara é louco.',
+    full: 'Entrei no site da Torus pq um colega falou do estúdio e olha... fiquei de queixo caído com os trabalhos. Fui ver a galeria e acabei passando umas horas lá. O realismo do Jhow é mt foda, às vezes parece foto mesmo. Mandei msg, falimos do q eu queria e ele me ajudou a adaptar o desenho pro braço. Ficou melhor do q eu imaginava. Nota 10, sem erro.',
+  },
+  {
+    name: 'Raquel e Luiz',
+    photo: depoimento06,
+    preview: 'Eu e o Luiz fizemos tatuagem juntos na Torus. O Jhow tratou a gente como família.',
+    full: 'A gente é amigo do Jhow e não podia ser diferente: fizemos as tatuagens juntos na Torus. Ele recebeu a gente mt bem, deu um monte de dica, rimos o tempo todo. Eu fiz uma floral e o Luiz um retrato do cachorro dele, os dois ficaram lindos, mt detalhe. Já voltamos outras vezes e sempre é a mesma vibe boa. Recomendamos demais, sério, é o melhor estúdio da região.',
+  },
+  {
+    name: 'Roberto Cruz',
+    photo: depoimento07,
+    preview: 'Acompanho o Jhow desde os primeiros trabalhos. Hoje a Torus é referência e eu tenho orgulho.',
+    full: 'Eu acompanho o Jhow desde os primeiros trabalhos dele, quando ainda tava ali no começo, tudo simples. Hoje vejo a Torus virar referência e fico mt feliz por ele, mereceu cada passo. Já fiz umas tatuagens e todas ficaram do jeito q eu queria, com aquele cuidado que só quem gosta do q faz tem. Pra mim não tem outro lugar. Valeu Jhow, continue assim, o cara é bom demais.',
+  },
 ];
 
 const jhowPhotos = [
@@ -36,7 +70,7 @@ const jhowPhotos = [
   { image: jhowCloseup, alt: 'Retrato aproximado do Jhow' },
 ];
 
-let trabalhosRoot;
+let depoimentosRoot;
 let jhowRoot;
 let sessaoRoot;
 let galeriaRoot;
@@ -106,27 +140,14 @@ window.initSessaoButton = () => {
   });
 };
 
-window.initTrabalhosCarousel = () => {
-  const container = document.querySelector('#trabalhos-carousel-root');
-  if (!container || trabalhosRoot) return;
+window.initDepoimentosCarousel = () => {
+  const container = document.querySelector('#depoimentos-carousel-root');
+  if (!container || depoimentosRoot) return;
 
-  trabalhosRoot = createRoot(container);
+  depoimentosRoot = createRoot(container);
   flushSync(() => {
-    trabalhosRoot.render(
-      <CircularCarousel
-        items={items}
-        preset="cylinder"
-        intro="rise"
-        cardWidth={300}
-        aspectRatio={1}
-        gap={60}
-        autoplay="drift"
-        speed={14}
-        fadeColor="#111111"
-        cornerRadius={10}
-        captions
-        style={{ width: '100%', height: '100%' }}
-      />,
+    depoimentosRoot.render(
+      <DepoimentosCarousel items={depoimentos} />,
     );
   });
 

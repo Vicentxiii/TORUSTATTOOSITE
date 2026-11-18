@@ -51,7 +51,7 @@ function finishPreloader(preloader, site) {
 
 	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 		gsap.set(site.querySelector("h1"), { opacity: 1, y: 0 });
-		window.initTrabalhosCarousel?.();
+		window.initDepoimentosCarousel?.();
 		window.initJhowCarousel?.();
 		window.initSessaoButton?.();
 		window.initGaleriaButton?.();
@@ -73,7 +73,7 @@ function finishPreloader(preloader, site) {
 
 	initLenis();
 	initHero();
-	window.initTrabalhosCarousel?.();
+	window.initDepoimentosCarousel?.();
 	window.initJhowCarousel?.();
 	window.initSessaoButton?.();
 	window.initGaleriaButton?.();
