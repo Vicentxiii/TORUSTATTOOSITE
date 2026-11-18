@@ -1,7 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import CircularGallery from './components/CircularGallery.jsx';
+import CircularCarousel from './components/CircularCarousel.jsx';
+import trabalho01 from '../assets/Galeria/Ave maria realismo preto e branco.jpg';
+import trabalho02 from '../assets/Galeria/Caveira indio realismo.jpg';
+import trabalho03 from '../assets/Galeria/Coringa realismo preto e branco.jpg';
+import trabalho04 from '../assets/Galeria/Fine line garota pinup.jpg';
+import trabalho05 from '../assets/Galeria/Gato fine line com surrealismo.jpg';
+import trabalho06 from '../assets/Galeria/Leao realismo.jpg';
 import DepthCarousel from './components/DepthCarousel.jsx';
 import SpecularButton from './components/SpecularButton.jsx';
 import StarBorder from './components/StarBorder.jsx';
@@ -11,21 +17,16 @@ import jhowCloseup from '../assets/Foto do Jhow para Bio 3 .png';
 
 const WHATSAPP_URL = `https://wa.me/5511985545833?text=${encodeURIComponent('Olá Jow, vim pelo seu site, eu curti muitos seus trabalhos, podemos marcar um horário?')}`;
 
-// A galeria lê APENAS esta pasta. Qualquer imagem nova colocada em /assets
-// fora dela nunca aparece em TRABALHOS — sem precisar de lista de exclusão.
-const imageModules = import.meta.glob('/assets/trabalhos/*.{jpg,jpeg,png,webp,avif}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-});
-
-const items = Object.entries(imageModules)
-  .sort(([first], [second]) => first.localeCompare(second, 'pt-BR'))
-  .map(([path, src], index) => ({
-    image: src,
-    alt: `Trabalho de tatuagem ${String(index + 1).padStart(2, '0')}`,
-    text: `Trabalho ${String(index + 1).padStart(2, '0')}`,
-  }));
+// Itens do carrossel da seção TRABALHOS. Por enquanto são 6 fotos de
+// exemplo — para virar depoimentos, é só trocar src/title/subtitle aqui.
+const items = [
+  { src: trabalho01, alt: 'Tatuagem realismo em preto e branco', title: 'Trabalho 01', subtitle: 'Realismo' },
+  { src: trabalho02, alt: 'Tatuagem de caveira indígena', title: 'Trabalho 02', subtitle: 'Realismo' },
+  { src: trabalho03, alt: 'Tatuagem do Coringa em preto e branco', title: 'Trabalho 03', subtitle: 'Realismo' },
+  { src: trabalho04, alt: 'Tatuagem fine line de garota pin-up', title: 'Trabalho 04', subtitle: 'Fine line' },
+  { src: trabalho05, alt: 'Tatuagem fine line de gato surrealista', title: 'Trabalho 05', subtitle: 'Fine line' },
+  { src: trabalho06, alt: 'Tatuagem realista de leão', title: 'Trabalho 06', subtitle: 'Realismo' },
+];
 
 const jhowPhotos = [
   { image: jhowPortrait, alt: 'Retrato em preto e branco do Jhow' },
@@ -110,19 +111,18 @@ window.initTrabalhosCarousel = () => {
   trabalhosRoot = createRoot(container);
   flushSync(() => {
     trabalhosRoot.render(
-      <CircularGallery
+      <CircularCarousel
         items={items}
-        bend={3}
-        textColor="#f2f2f2"
-        borderRadius={0.03}
-        gap={0.22}
-        fadeEdges={0.16}
-        shadow={0.35}
-        captureWheel={false}
-        showTitles={false}
-        font='400 34px "Bebas Neue", Impact, sans-serif'
-        aria-label="Trabalhos de tatuagem"
-        className="torus-circular-gallery"
+        preset="cylinder"
+        intro="rise"
+        cardWidth={220}
+        aspectRatio={1}
+        gap={25}
+        autoplay="drift"
+        speed={14}
+        fadeColor="#111111"
+        cornerRadius={10}
+        captions
         style={{ width: '100%', height: '100%' }}
       />,
     );
