@@ -102,6 +102,11 @@
   -webkit-user-drag: none;
 }
 
+.circular-carousel__custom {
+  position: absolute;
+  overflow: hidden;
+}
+
 .circular-carousel__photo--leaving {
   animation: circular-carousel-leave 700ms cubic-bezier(0.33, 1, 0.68, 1) both;
 }

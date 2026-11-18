@@ -42,7 +42,26 @@ function DepoimentoCard({ item, onOpen }) {
   );
 }
 
-function DepoimentoModal({ item, onClose }) {
+// Conteúdo reaproveitado dentro de cada card do CircularCarousel (3D).
+export function DepoimentoCardContent({ item }) {
+  return (
+    <div className="dep-circular-card">
+      <div className="dep-circular-card__photo">
+        <img src={item.photo} alt="" draggable="false" />
+      </div>
+      <div className="dep-circular-card__body">
+        <div className="dep-circular-card__person">
+          <img className="dep-circular-card__avatar" src={item.photo} alt="" draggable="false" />
+          <strong>{item.name}</strong>
+        </div>
+        <p className="dep-circular-card__quote">“{item.preview}”</p>
+        <span className="dep-circular-card__more">Ler mais</span>
+      </div>
+    </div>
+  );
+}
+
+export function DepoimentoModal({ item, onClose }) {
   useEffect(() => {
     const onKey = (event) => {
       if (event.key === 'Escape') onClose();

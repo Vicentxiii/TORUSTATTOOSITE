@@ -202,6 +202,7 @@ const CircularCarousel = ({
   captions = false,
   onChange,
   onItemClick,
+  renderCard,
   className = '',
   style
 }) => {
@@ -861,14 +862,20 @@ const CircularCarousel = ({
           className="circular-carousel__frame"
           style={{ height: axis === 'x' ? size : cardH, borderRadius: frameRadius }}
         >
-          <img
-            className="circular-carousel__photo"
-            src={item.src}
-            alt=""
-            draggable={false}
-            decoding="async"
-            style={photoStyle}
-          />
+          {renderCard ? (
+            <div className="circular-carousel__custom" style={photoStyle}>
+              {renderCard(item, index)}
+            </div>
+          ) : (
+            <img
+              className="circular-carousel__photo"
+              src={item.src}
+              alt=""
+              draggable={false}
+              decoding="async"
+              style={photoStyle}
+            />
+          )}
           {gone && (
             <img
               key={`leaving-${leaving.id}`}

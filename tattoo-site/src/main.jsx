@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import DepoimentosCarousel from './components/DepoimentosCarousel.jsx';
+import DepoimentosCircular from './components/DepoimentosCircular.jsx';
 import depoimento01 from '../assets/DEPOIMENTOS/Gabriel Souza.png';
 import depoimento02 from '../assets/DEPOIMENTOS/Lana fontes.png';
 import depoimento03 from '../assets/DEPOIMENTOS/Lucas Germano.png';
@@ -147,7 +147,7 @@ window.initDepoimentosCarousel = () => {
   depoimentosRoot = createRoot(container);
   flushSync(() => {
     depoimentosRoot.render(
-      <DepoimentosCarousel items={depoimentos} />,
+      <DepoimentosCircular items={depoimentos} />,
     );
   });
 
