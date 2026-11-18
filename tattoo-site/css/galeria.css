@@ -22,12 +22,25 @@ body {
 	height: 100vh;
 	height: 100svh;
 	overflow: hidden;
-	background: #0d0b09;
+	background: #000;
 }
 
 .gallery-hero__veil {
 	position: absolute;
 	inset: 0;
+}
+
+/* Fade preto na base da HERO: esconde o corte da imagem. */
+.gallery-hero::after {
+	content: '';
+	position: absolute;
+	z-index: 1;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 32%;
+	background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.75) 55%, #000 100%);
+	pointer-events: none;
 }
 
 .gallery-hero__content {
