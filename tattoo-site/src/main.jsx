@@ -117,9 +117,9 @@ window.initTrabalhosCarousel = () => {
         items={items}
         preset="cylinder"
         intro="rise"
-        cardWidth={220}
+        cardWidth={300}
         aspectRatio={1}
-        gap={25}
+        gap={60}
         autoplay="drift"
         speed={14}
         fadeColor="#111111"

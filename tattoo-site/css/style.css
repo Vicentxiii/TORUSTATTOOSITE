@@ -351,8 +351,8 @@ body.preloader-active {
 .arc-carousel__react-root {
 	position: relative;
 	width: 100%;
-	height: min(68svh, 560px);
-	min-height: 390px;
+	height: min(76svh, 640px);
+	min-height: 440px;
 	color: #f2f2f2;
 }
 
@@ -633,8 +633,8 @@ body.preloader-active {
 	}
 
 	.arc-carousel__react-root {
-		height: 62svh;
-		min-height: 380px;
+		height: 68svh;
+		min-height: 440px;
 	}
 
 	.about {
