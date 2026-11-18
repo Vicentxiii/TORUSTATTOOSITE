@@ -8,6 +8,7 @@ import trabalho03 from '../assets/Galeria/Coringa realismo preto e branco.jpg';
 import trabalho04 from '../assets/Galeria/Fine line garota pinup.jpg';
 import trabalho05 from '../assets/Galeria/Gato fine line com surrealismo.jpg';
 import trabalho06 from '../assets/Galeria/Leao realismo.jpg';
+import trabalho07 from '../assets/Galeria/Lobo e mulher realismo colorido.jpg';
 import DepthCarousel from './components/DepthCarousel.jsx';
 import SpecularButton from './components/SpecularButton.jsx';
 import StarBorder from './components/StarBorder.jsx';
@@ -26,6 +27,7 @@ const items = [
   { src: trabalho04, alt: 'Tatuagem fine line de garota pin-up', title: 'Trabalho 04', subtitle: 'Fine line' },
   { src: trabalho05, alt: 'Tatuagem fine line de gato surrealista', title: 'Trabalho 05', subtitle: 'Fine line' },
   { src: trabalho06, alt: 'Tatuagem realista de leão', title: 'Trabalho 06', subtitle: 'Realismo' },
+  { src: trabalho07, alt: 'Tatuagem realista colorida de lobo e mulher', title: 'Trabalho 07', subtitle: 'Colorido' },
 ];
 
 const jhowPhotos = [
