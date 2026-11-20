@@ -74,6 +74,74 @@ let depoimentosRoot;
 let jhowRoot;
 let sessaoRoot;
 let galeriaRoot;
+let clienteRoot;
+let significadosRoot;
+
+window.initMeaningButton = () => {
+  const container = document.querySelector('#significados-button-root');
+  if (!container || significadosRoot) return;
+
+  significadosRoot = createRoot(container);
+  flushSync(() => {
+    significadosRoot.render(
+      <StarBorder
+        as="a"
+        href="/significados"
+        color="#ffffff"
+        trailColor="#ffffff"
+        duration={4}
+        direction="clockwise"
+        stars={1}
+        trailLength={0.3}
+        thickness={1}
+        radius={6}
+        glow={0.6}
+        hover="lap"
+        sparkle={false}
+        theme="dark"
+      >
+        Significados
+        <svg className="galeria-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M7 17L17 7" />
+          <path d="M8 7h9v9" />
+        </svg>
+      </StarBorder>,
+    );
+  });
+};
+
+window.initClientInfoButton = () => {
+  const container = document.querySelector('#cliente-button-root');
+  if (!container || clienteRoot) return;
+
+  clienteRoot = createRoot(container);
+  flushSync(() => {
+    clienteRoot.render(
+      <StarBorder
+        as="a"
+        href="/informacoes-do-cliente"
+        color="#ffffff"
+        trailColor="#ffffff"
+        duration={4}
+        direction="clockwise"
+        stars={1}
+        trailLength={0.3}
+        thickness={1}
+        radius={6}
+        glow={0.6}
+        hover="lap"
+        sparkle={false}
+        theme="dark"
+      >
+        Informações do cliente
+        <svg className="galeria-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M7 17L17 7" />
+          <path d="M8 7h9v9" />
+        </svg>
+      </StarBorder>,
+    );
+  });
+};
 
 window.initGaleriaButton = () => {
   const container = document.querySelector('#galeria-button-root');

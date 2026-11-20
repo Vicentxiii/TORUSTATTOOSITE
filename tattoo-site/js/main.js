@@ -54,6 +54,8 @@ function finishPreloader(preloader, site) {
 		window.initDepoimentosCarousel?.();
 		window.initJhowCarousel?.();
 		window.initSessaoButton?.();
+		window.initMeaningButton?.();
+		window.initClientInfoButton?.();
 		window.initGaleriaButton?.();
 		// Sem animação, exibe os valores finais das estatísticas.
 		site.querySelectorAll(".stat__number").forEach((element) => {
@@ -76,6 +78,8 @@ function finishPreloader(preloader, site) {
 	window.initDepoimentosCarousel?.();
 	window.initJhowCarousel?.();
 	window.initSessaoButton?.();
+	window.initMeaningButton?.();
+	window.initClientInfoButton?.();
 	window.initGaleriaButton?.();
 	initAbout();
 	initAboutScroll();

@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/galeria", "destination": "/galeria.html" }
+    { "source": "/galeria", "destination": "/galeria.html" },
+    { "source": "/informacoes-do-cliente", "destination": "/informacoes-do-cliente.html" },
+    { "source": "/significados", "destination": "/significados.html" }
   ]
 }
