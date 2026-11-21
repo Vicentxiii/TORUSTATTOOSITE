@@ -105,12 +105,14 @@ function SiteMenu() {
             />
           </div>
 
-          <div className="site-menu__foot">
-            <span>Role, arraste ou use as setas <b>↑ ↓</b></span>
-            <button className="site-menu__enter" type="button" onClick={() => go(selected)}>
-              Abrir página <span>→</span>
-            </button>
-          </div>
+          {!isMobile && (
+            <div className="site-menu__foot">
+              <span>Role, arraste ou use as setas <b>↑ ↓</b></span>
+              <button className="site-menu__enter" type="button" onClick={() => go(selected)}>
+                Abrir página <span>→</span>
+              </button>
+            </div>
+          )}
         </div>
       )}
     </>

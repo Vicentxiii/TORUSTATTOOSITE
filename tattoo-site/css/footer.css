@@ -42,6 +42,9 @@
 }
 
 .site-footer__brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.9rem;
 	color: #fff;
 	font-family: "Anton", Impact, sans-serif;
 	font-size: clamp(1.8rem, 3.2vw, 2.8rem);
@@ -51,7 +54,14 @@
 	text-decoration: none;
 }
 
-.site-footer__brand span { color: #a9a59f; }
+.site-footer__brand-text span { color: #a9a59f; }
+
+.site-footer__brand-logo {
+	width: 30px;
+	height: 30px;
+	object-fit: contain;
+	opacity: 0.85;
+}
 
 .site-footer__head p {
 	margin: 0;

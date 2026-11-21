@@ -36,10 +36,14 @@ if (heroRoot) {
 // ---------------------------------------------------------------------------
 const TAGS = [
   { id: 'todos', label: 'Todos', match: null },
+  { id: 'destaques', label: 'Destaques', match: ['colorido', 'coloridos', 'colorida'] },
   { id: 'fine-line', label: 'Fine Line', match: ['fine line', 'fineline', 'fine-line'] },
   { id: 'realismo', label: 'Realismo', match: ['realismo', 'realistic', 'realism'] },
   { id: 'coloridos', label: 'Coloridos', match: ['colorido', 'coloridos', 'color', 'colorida'] },
 ];
+
+// Tag "Destaques": só as artes coloridas (as mesmas de Coloridos).
+const FEATURED_MATCH = ['colorido', 'coloridos', 'colorida'];
 
 const artworkModules = import.meta.glob('../assets/Galeria/*.{jpg,jpeg,png,webp,avif}', {
   eager: true,
@@ -49,12 +53,15 @@ const artworkModules = import.meta.glob('../assets/Galeria/*.{jpg,jpeg,png,webp,
 
 // Cada obra guarda o nome do arquivo (para achar a tag) + a URL.
 const ALL = Object.entries(artworkModules)
-  // Mesma tatuagem "Índia com lobo" aparecia em duas fotos; mantém só a completa.
-  .filter(([path]) => !path.includes('ppreto'))
+  // Remove duplicata e a Ave Maria (pedido do usuário).
+  .filter(([path]) => !path.includes('ppreto') && !path.includes('ave maria'))
   .sort(([a], [b]) => a.localeCompare(b, 'pt-BR'))
   .map(([path, src]) => {
     const name = path.split('/').pop().toLowerCase();
     const tags = TAGS.filter((tag) => tag.match?.some((word) => name.includes(word))).map((tag) => tag.id);
+    if (FEATURED_MATCH.some((word) => name.includes(word)) && !tags.includes('destaques')) {
+      tags.push('destaques');
+    }
     return { src, name, tags, label: name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ') };
   });
 

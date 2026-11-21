@@ -11,10 +11,27 @@ import depoimento06 from '../assets/DEPOIMENTOS/Raquel e Luiz.png';
 import depoimento07 from '../assets/DEPOIMENTOS/Roberto Cruz.png';
 import DepthCarousel from './components/DepthCarousel.jsx';
 import SpecularButton from './components/SpecularButton.jsx';
+const isMobile = window.matchMedia('(max-width: 640px)').matches;
 import StarBorder from './components/StarBorder.jsx';
 import jhowPortrait from '../assets/Foto do Jhow para Bio.png';
 import jhowSeated from '../assets/Foto do Jhow para Bio 2 .png';
 import jhowCloseup from '../assets/Foto do Jhow para Bio 3 .png';
+
+const mobileWorkModules = import.meta.glob('../assets/Galeria/*.{jpg,jpeg,png,webp,avif}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+const mobileWork = Object.entries(mobileWorkModules)
+  .filter(([path]) => !path.includes('ppreto') && !path.includes('ave maria'))
+  .sort(([a], [b]) => a.localeCompare(b, 'pt-BR'))
+  .map(([, src]) => src)
+  // Destaques primeiro (coloridos e tigre), depois complete até 6.
+  .sort((a, b) => {
+    const rank = (url) => /colorido|colorida|Tigre%20realismo/i.test(url) ? 0 : 1;
+    return rank(a) - rank(b);
+  })
+  .slice(0, 6);
 
 const WHATSAPP_URL = `https://wa.me/5511985545833?text=${encodeURIComponent('Olá Jow, vim pelo seu site, eu curti muitos seus trabalhos, podemos marcar um horário?')}`;
 
@@ -183,6 +200,38 @@ window.initSessaoButton = () => {
 
   sessaoRoot = createRoot(container);
   flushSync(() => {
+    // Mobile: mesma animação do botão "Entrar na galeria".
+    if (isMobile) {
+      sessaoRoot.render(
+        <StarBorder
+          as="a"
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          color="#ffffff"
+          trailColor="#ffffff"
+          duration={4}
+          direction="clockwise"
+          stars={1}
+          trailLength={0.3}
+          thickness={1}
+          radius={6}
+          glow={0.6}
+          hover="lap"
+          sparkle={false}
+          clickPulse
+          theme="dark"
+        >
+          marcar uma sessão
+          <svg className="galeria-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M7 17L17 7" />
+            <path d="M8 7h9v9" />
+          </svg>
+        </StarBorder>,
+      );
+      return;
+    }
+
     sessaoRoot.render(
       <SpecularButton
         size="lg"
@@ -207,6 +256,8 @@ window.initSessaoButton = () => {
     );
   });
 };
+
+window.mobileWorkUrls = mobileWork;
 
 window.initDepoimentosCarousel = () => {
   const container = document.querySelector('#depoimentos-carousel-root');

@@ -104,6 +104,7 @@ function finishPreloader(preloader, site) {
 
 	initLenis();
 	initHero();
+	initMobileWork();
 	window.initDepoimentosCarousel?.();
 	window.initJhowCarousel?.();
 	window.initSessaoButton?.();
@@ -114,6 +115,21 @@ function finishPreloader(preloader, site) {
 	initAboutScroll();
 	initVideoScroll();
 	ScrollTrigger.refresh();
+}
+
+// Mobile first: preenche a seção de trabalhos em destaque com as 6 artes.
+function initMobileWork() {
+	const grid = document.querySelector('#mobile-work-grid');
+	if (!grid) return;
+
+	// As URLs vêm do módulo React (window.mobileWorkUrls).
+	const urls = window.mobileWorkUrls || [];
+	urls.forEach((src) => {
+		const figure = document.createElement('figure');
+		figure.className = 'mobile-work__item';
+		figure.innerHTML = `<img src="${src}" alt="Trabalho em destaque da Torus Tattoo" loading="lazy" decoding="async">`;
+		grid.appendChild(figure);
+	});
 }
 
 let lenis;
@@ -167,14 +183,23 @@ function initHero() {
 	});
 
 	const covers = Array.from(titleWord?.querySelectorAll(".hero__title-art") ?? []);
-	const setCover = (progress) => {
-		if (!covers.length) return;
-		const index = Math.min(covers.length - 1, Math.floor(progress * covers.length));
+	const showCover = (index) => {
 		covers.forEach((cover, i) => cover.classList.toggle("is-active", i === index));
 	};
-	setCover(0);
+	showCover(0);
 
-	if (next) {
+	// Mobile first: as capas passam sozinhas em fade a cada 0,5s (sem scroll).
+	if (isMobileHero && covers.length > 1) {
+		let current = 0;
+		const timer = window.setInterval(() => {
+			if (document.hidden) return;
+			current = (current + 1) % covers.length;
+			showCover(current);
+		}, 500);
+		window.addEventListener('pagehide', () => window.clearInterval(timer), { once: true });
+	}
+
+	if (next && !isMobileHero) {
 		// A seção seguinte sobe por cima do hero (z-index 2) enquanto ele ainda está preso.
 		// A margem negativa compensa exatamente a distância do pin, então nada aparece no início.
 		next.style.marginTop = `-${HERO_PIN_RATIO * 100}vh`;
@@ -197,26 +222,34 @@ function initHero() {
 		);
 	}
 
-	gsap.to(hero.querySelector(".hero__shade"), {
-		opacity: 0.92,
-		ease: "none",
-		scrollTrigger: {
-			trigger: hero,
-			start: "top top",
-			end: () => `+=${window.innerHeight * HERO_PIN_RATIO}`,
-			scrub: true,
-			pin: true,
-			anticipatePin: 1,
-			invalidateOnRefresh: true,
-			onUpdate: (self) => setCover(self.progress),
-		},
-	});
+	if (!isMobileHero) {
+		gsap.to(hero.querySelector(".hero__shade"), {
+			opacity: 0.92,
+			ease: "none",
+			scrollTrigger: {
+				trigger: hero,
+				start: "top top",
+				end: () => `+=${window.innerHeight * HERO_PIN_RATIO}`,
+				scrub: true,
+				pin: true,
+				anticipatePin: 1,
+				invalidateOnRefresh: true,
+			},
+		});
+	}
 }
 
 function initAbout() {
 	const about = document.querySelector(".about");
 	const photo = about.querySelector(".jhow-photo");
 	const copy = about.querySelectorAll(".about__eyebrow, h2, .about__bio, .about__cta, .about__instagram, .about__signature");
+
+	// Mobile first: sem revelação por scroll, conteúdo visível direto.
+	if (window.matchMedia("(max-width: 640px)").matches) {
+		gsap.set(photo, { clipPath: "inset(0% 0 0)" });
+		gsap.set(copy, { y: 0, opacity: 1 });
+		return;
+	}
 	const timeline = gsap.timeline({
 		scrollTrigger: {
 			// A seção ".about" é deslocada via transform, então o gatilho usa a galeria.
@@ -244,6 +277,13 @@ function initAbout() {
 function initAboutScroll() {
 	const about = document.querySelector(".about");
 	if (!about) return;
+
+	// Mobile first: bio estática, sem pin/scrub — evita o engasgo no iPhone.
+	if (window.matchMedia("(max-width: 640px)").matches) {
+		gsap.set(about, { y: 0, clearProps: "transform" });
+		return;
+	}
+
 	let attempts = 0;
 
 	const start = () => {
