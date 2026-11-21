@@ -49,6 +49,8 @@ const artworkModules = import.meta.glob('../assets/Galeria/*.{jpg,jpeg,png,webp,
 
 // Cada obra guarda o nome do arquivo (para achar a tag) + a URL.
 const ALL = Object.entries(artworkModules)
+  // Mesma tatuagem "Índia com lobo" aparecia em duas fotos; mantém só a completa.
+  .filter(([path]) => !path.includes('ppreto'))
   .sort(([a], [b]) => a.localeCompare(b, 'pt-BR'))
   .map(([path, src]) => {
     const name = path.split('/').pop().toLowerCase();
@@ -63,6 +65,53 @@ const trackEl = document.getElementById('gallery-track');
 const filtersEl = document.getElementById('gallery-filters');
 
 let activeTag = 'todos';
+
+// --- Lightbox (mobile): foto ampliada, fundo em blur e CTA abaixo ---
+let lightbox = null;
+let previousOverflow = '';
+
+function closeLightbox() {
+  if (!lightbox) return;
+  lightbox.classList.remove('is-open');
+  document.body.style.overflow = previousOverflow;
+}
+
+function openLightbox(src, alt) {
+  if (!lightbox) {
+    lightbox = document.createElement('div');
+    lightbox.className = 'gallery-lightbox';
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.setAttribute('aria-label', 'Foto ampliada');
+    lightbox.innerHTML = `
+      <button class="gallery-lightbox__close" type="button" aria-label="Fechar foto">✕</button>
+      <div class="gallery-lightbox__panel">
+        <img class="gallery-lightbox__img" alt="" decoding="async">
+        <button class="gallery-lightbox__book" type="button">Marcar sessão</button>
+      </div>
+    `;
+    document.body.appendChild(lightbox);
+
+    lightbox.querySelector('.gallery-lightbox__close').addEventListener('click', closeLightbox);
+    lightbox.querySelector('.gallery-lightbox__book').addEventListener('click', () => {
+      window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer');
+    });
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+  }
+
+  const img = lightbox.querySelector('.gallery-lightbox__img');
+  img.src = src;
+  img.alt = alt;
+  previousOverflow = document.body.style.overflow;
+  document.body.style.overflow = 'hidden';
+  lightbox.classList.add('is-open');
+  lightbox.querySelector('.gallery-lightbox__close').focus();
+}
 
 function tagLabel(id) {
   return TAGS.find((tag) => tag.id === id)?.label ?? id;
@@ -126,9 +175,13 @@ function render() {
       window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer');
     });
 
-    // Mobile: toque na imagem mostra/esconde o botão; tocar fora esconde.
+    // Mobile: toque abre a foto ampliada. Desktop mantém o botão no hover.
     figure.addEventListener('click', (event) => {
       if (event.target.closest('.gallery-card__book')) return;
+      if (window.matchMedia('(max-width: 640px)').matches) {
+        openLightbox(art.src, `Trabalho de tatuagem ${String(index + 1).padStart(2, '0')}`);
+        return;
+      }
       const isOpen = figure.classList.toggle('is-tapped');
       if (isOpen) {
         document.querySelectorAll('.gallery-card.is-tapped').forEach((card) => {

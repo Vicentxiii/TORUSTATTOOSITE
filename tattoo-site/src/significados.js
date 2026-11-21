@@ -6,6 +6,8 @@ const artworks = Object.entries(
     import: 'default',
   }),
 )
+  // Foto duplicada da "Índia com lobo" removida (mantém só a completa).
+  .filter(([path]) => !path.includes('ppreto'))
   .sort(([a], [b]) => a.localeCompare(b, 'pt-BR'))
   .map(([path, src]) => {
     const file = path.split('/').pop();
@@ -43,7 +45,6 @@ const INFO = [
   { category: 'animais', text: 'Um cachorro em realismo. Lealdade e proteção, além de uma forma de manter perto a memória de um companheiro.' },
   { category: 'animais', text: 'Uma mulher indígena com um lobo. Fala de instinto, natureza e ancestralidade, misturando força feminina e espírito selvagem.' },
   { category: 'espiritual', text: 'Uma mulher indígena e uma criança. Representa carinho, proteção e continuidade — a família e aquilo que se quer preservar.' },
-  { category: 'animais', text: 'Um lobo acompanhado de uma mulher indígena. O lobo como guia e a mulher como conexão com a terra: coragem, intuição e respeito pela natureza.' },
   { category: 'animais', text: 'Uma lula colossal. Representa o mistério do mar e o que está escondido nas profundezas, entre medo, fascínio e o desconhecido.' },
   { category: 'outros', text: 'Um rosto em preto e branco. Guarda expressão e emoção, podendo retratar alguém importante ou um estado de espírito.' },
   { category: 'outros', text: 'U peça de realismo puro: detalhe, luz e textura. Uma homenagem à capacidade da tatuagem de reproduzir a vida.' },

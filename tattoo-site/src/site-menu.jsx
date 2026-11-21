@@ -91,16 +91,16 @@ function SiteMenu() {
               soundVolume={0.7}
               textColor="#7d7a75"
               activeColor="#ffffff"
-              side="left"
-              fontSize={isMobile ? 2.2 : 3.1}
-              spacing={1.32}
+              side={isMobile ? 'right' : 'left'}
+              fontSize={isMobile ? 3.3 : 3.1}
+              spacing={1.26}
               curve={1}
               tilt={5.5}
               blur={2}
               fade={0.22}
               minOpacity={0.06}
               smoothing={220}
-              inset={isMobile ? 26 : Math.max(80, window.innerWidth * 0.1)}
+              inset={isMobile ? 22 : Math.max(80, window.innerWidth * 0.1)}
               loop
               draggable
               className="site-menu__option-wheel"

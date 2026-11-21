@@ -721,6 +721,31 @@ body.preloader-active {
 	}
 }
 
+/* Ajustes exclusivos de mobile first. */
+@media (max-width: 640px) {
+	/* Quarta seção: fundo removido, tudo preto. */
+	.video-section::before {
+		display: none;
+	}
+
+	/* "Como funciona": só o botão da galeria, bem maior. */
+	#significados-button-root,
+	#cliente-button-root {
+		display: none !important;
+	}
+
+	.how-section__cta,
+	.how-section__cta .star-border {
+		width: 100%;
+	}
+
+	.how-section__cta .star-border {
+		min-height: 58px;
+		padding: 1.1rem 1.5rem;
+		font-size: 0.95rem;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.preloader,
 	.preloader__logo path,

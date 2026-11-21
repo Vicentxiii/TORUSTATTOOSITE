@@ -133,6 +133,34 @@
 	letter-spacing: 0.18em;
 }
 
+.site-footer__credits {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 0.35rem 0.7rem;
+	padding-top: clamp(1rem, 2vw, 1.5rem);
+	color: #6f6b66;
+	font-size: 0.56rem;
+	font-weight: 400;
+	letter-spacing: 0.12em;
+	text-align: center;
+}
+
+.site-footer__credits a {
+	color: #c9a961;
+	font-weight: 600;
+	text-decoration: none;
+	transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.site-footer__credits a:hover {
+	color: #f0d89b;
+	text-shadow: 0 0 14px rgba(201, 169, 97, 0.5);
+}
+
+.site-footer__credits-sep { color: #c9a961; }
+
 @media (max-width: 760px) {
 	.site-footer__cols { grid-template-columns: 1fr; gap: 2.25rem; }
 	.site-footer__head { align-items: flex-start; }
