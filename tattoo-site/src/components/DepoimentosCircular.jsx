@@ -20,9 +20,9 @@ export default function DepoimentosCircular({ items }) {
         items={carouselItems}
         preset="cylinder"
         intro="rise"
-        cardWidth={620}
+        cardWidth={496}
         aspectRatio={1.75}
-        gap={62}
+        gap={50}
         curve={0.95}
         speed={14}
         momentum={0.09}

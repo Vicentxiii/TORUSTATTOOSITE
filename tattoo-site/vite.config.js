@@ -26,6 +26,10 @@ function cleanRoutes() {
       req.url = '/informacoes-do-cliente.html' + suffix;
     } else if (slug === '/significados') {
       req.url = '/significados.html' + suffix;
+    } else if (slug === '/parcerias') {
+      req.url = '/parcerias.html' + suffix;
+    } else if (slug === '/contato') {
+      req.url = '/contato.html' + suffix;
     }
   };
 
@@ -55,6 +59,8 @@ export default defineConfig({
         galeria: resolve(import.meta.dirname, 'galeria.html'),
         'informacoes-do-cliente': resolve(import.meta.dirname, 'informacoes-do-cliente.html'),
         significados: resolve(import.meta.dirname, 'significados.html'),
+        parcerias: resolve(import.meta.dirname, 'parcerias.html'),
+        contato: resolve(import.meta.dirname, 'contato.html'),
       },
     },
   },

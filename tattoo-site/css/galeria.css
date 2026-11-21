@@ -284,6 +284,48 @@ body {
 	color: #fff;
 }
 
+/* Botão flutuante para a página de significados. */
+.gallery-floating-link {
+	position: fixed;
+	z-index: 60;
+	right: clamp(1rem, 3vw, 2.5rem);
+	bottom: calc(clamp(1.25rem, 4vw, 2.5rem) + env(safe-area-inset-bottom, 0px));
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	min-height: 46px;
+	padding: 0.75rem 1.25rem;
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	border-radius: 100px;
+	background: rgba(18, 18, 18, 0.9);
+	backdrop-filter: blur(10px);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+	color: #f2eee7;
+	font-family: var(--font-body);
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-decoration: none;
+	transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.gallery-floating-link svg {
+	width: 14px;
+	height: 14px;
+	flex: none;
+	transition: transform 0.25s ease;
+}
+
+.gallery-floating-link:hover {
+	background: #f2eee7;
+	border-color: #f2eee7;
+	color: #080706;
+	transform: translateY(-2px);
+}
+
+.gallery-floating-link:hover svg { transform: translate(2px, -2px); }
+
 /* Fade preto fixo no rodapé, presente durante todo o scroll. */
 .gallery-bottom-fade {
 	position: fixed;

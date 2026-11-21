@@ -25,7 +25,11 @@ const INFO = [
   { category: 'animais', text: 'Outra borboleta, agora em preto e branco. Fala de delicadeza, leveza e da ideia de recomeçar com mais liberdade.' },
   { category: 'animais', text: 'Um gato com elementos surreais. Representa mistério, intuição e independência, com um ar de sonho que desafia a realidade.' },
   { category: 'outros', text: 'O retrato de uma gueixa. Carrega elegância, disciplina e mistério, além da admiração por uma estética tradicional.' },
-  { category: 'outros', text: 'Um rosto que rompe a pele, em realismo. Mostra o que fica por baixo da aparência e fala de identidade, máscaras e da parte mais crua da personalidade.' },
+  {
+    title: 'Coringa abrindo a pele',
+    category: 'outros',
+    text: 'O Coringa rasga a pele e revela o que está por baixo da aparência. Representa identidade, máscaras e a parte mais crua da personalidade — a ideia de que ninguém é exatamente o que mostra.',
+  },
   { category: 'espiritual', text: 'Uma mulher indígena acompanhada de um gavião. Une força, natureza e espiritualidade: visão ampla, proteção e conexão com a terra.' },
   { category: 'outros', text: 'O retrato de uma mulher indígena em preto e branco. Representa ancestralidade, beleza e resistência dos povos originários.' },
   { category: 'espiritual', featured: true, text: 'Jesus em preto e branco. Símbolo de fé, esperança e compaixão; uma devoção pessoal ou um momento importante guardado na pele.' },
@@ -102,7 +106,7 @@ function render() {
       ...item,
       index,
       src: artworks[index].src,
-      title: artworks[index].name,
+      title: item.title || artworks[index].name,
     }))
     .filter((item) => artworks[item.index])
     .filter((item) => activeCategory === 'todos' || item.category === activeCategory);

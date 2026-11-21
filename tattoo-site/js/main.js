@@ -234,8 +234,10 @@ function initAboutScroll() {
 
 		// Prende a seção quando a galeria termina, enquanto as 3 fotos passam.
 		ScrollTrigger.create({
-			trigger: ".arc-carousel",
-			start: "bottom top",
+			// Fixa quando o wrapper chega ao topo da tela. Usar o fim da galeria
+			// como gatilho fixava a seção 240px acima e cortava o título "JHOW.".
+			trigger: ".about-pin",
+			start: "top top",
 			// Pin no wrapper: a .about continua animando via transform (y).
 			// Pinar o mesmo elemento que recebe o transform causa o pulo na
 			// saída do pin, onde a seção reaparece.
@@ -246,7 +248,7 @@ function initAboutScroll() {
 			onUpdate: (self) => {
 				api.setPosition(self.progress * (api.count - 1));
 				// Parallax bem leve no texto da bio enquanto as fotos passam.
-				gsap.set(about.querySelector(".about__copy"), { y: -36 - self.progress * 20 });
+				gsap.set(about.querySelector(".about__copy"), { y: -36 + self.progress * 10 });
 			},
 		});
 		ScrollTrigger.refresh();

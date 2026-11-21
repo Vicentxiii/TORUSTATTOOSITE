@@ -2,6 +2,8 @@
   "rewrites": [
     { "source": "/galeria", "destination": "/galeria.html" },
     { "source": "/informacoes-do-cliente", "destination": "/informacoes-do-cliente.html" },
-    { "source": "/significados", "destination": "/significados.html" }
+    { "source": "/significados", "destination": "/significados.html" },
+    { "source": "/parcerias", "destination": "/parcerias.html" },
+    { "source": "/contato", "destination": "/contato.html" }
   ]
 }
