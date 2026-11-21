@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import DitherVeil from './components/DitherVeil.jsx';
 import heroImage from '../assets/Hero com efeito para  a  galeria 3 .png';
-import birdsImage from '../assets/passaros-voando.png';
+import birdsImage from '../assets/passaros-dither.png';
 
 const veilRoot = document.getElementById('partner-veil');
 

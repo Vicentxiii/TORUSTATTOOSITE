@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import DitherVeil from './components/DitherVeil.jsx';
 // Importar a imagem (em vez de usar um caminho literal) faz o Vite copeá-la
 // para o dist com hash — sem isso o arquivo não existe no deploy.
-import heroImage from '../assets/Hero com efeito para  a  galeria 3 .png';
+import heroImage from '../assets/destaques-galeria.jpg';
 
 // --- HERO com efeito DitherVeil (revela a arte ao passar o cursor) ---
 const heroRoot = document.getElementById('dither-hero');
@@ -53,8 +53,8 @@ const artworkModules = import.meta.glob('../assets/Galeria/*.{jpg,jpeg,png,webp,
 
 // Cada obra guarda o nome do arquivo (para achar a tag) + a URL.
 const ALL = Object.entries(artworkModules)
-  // Remove duplicata e a Ave Maria (pedido do usuário).
-  .filter(([path]) => !path.includes('ppreto') && !path.includes('ave maria'))
+  // Remove duplicata e as artes que não devem aparecer.
+  .filter(([path]) => !/ppreto|ave maria|caveira indio|coringa|borboleta/i.test(path))
   .sort(([a], [b]) => a.localeCompare(b, 'pt-BR'))
   .map(([path, src]) => {
     const name = path.split('/').pop().toLowerCase();
@@ -71,7 +71,8 @@ const totalEl = document.getElementById('museum-total');
 const trackEl = document.getElementById('gallery-track');
 const filtersEl = document.getElementById('gallery-filters');
 
-let activeTag = 'todos';
+// "Destaques" é a aba inicial, no lugar de "Todos".
+let activeTag = 'destaques';
 
 // --- Lightbox (mobile): foto ampliada, fundo em blur e CTA abaixo ---
 let lightbox = null;
