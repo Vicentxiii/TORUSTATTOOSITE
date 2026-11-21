@@ -704,9 +704,69 @@ body.preloader-active {
 		font-size: 3.2rem;
 	}
 
-	.video-section__stage {
-		width: min(100%, 34vh);
+	/* Seção "Sobre o estúdio" no mobile: estátua grande à direita. */
+	.video-section {
+		padding: 4rem 1.25rem;
 	}
+
+	.video-section__inner {
+		position: relative;
+		display: block;
+	}
+
+	.video-section__stats {
+		position: relative;
+		z-index: 2;
+	}
+
+	.video-section__stats .stats__row {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		align-items: flex-start;
+	}
+
+	.video-section__stats .stat {
+		display: flex;
+		align-items: baseline;
+		gap: 0.75rem;
+		padding: 0;
+		border: 0;
+	}
+
+	.stat__number {
+		font-size: 2.4rem;
+		line-height: 1;
+	}
+
+	.stat__title {
+		margin: 0;
+		font-size: 0.72rem;
+	}
+
+	.stat__desc { display: none; }
+
+	.video-section__stage {
+		position: absolute;
+		z-index: 1;
+		top: 50%;
+		right: -12%;
+		width: 95vw;
+		max-width: none;
+		aspect-ratio: auto;
+		transform: translateY(-50%);
+		pointer-events: none;
+	}
+
+	.video-section__mobile-art {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+		object-position: right center;
+	}
+
+	.video-section__stage .video-section__media { display: none; }
 
 	.video-section::before {
 		background-size: 100% auto;
