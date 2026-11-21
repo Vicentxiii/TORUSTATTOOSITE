@@ -333,6 +333,18 @@ body.preloader-active {
 	pointer-events: none;
 }
 
+/* Fundo mais escuro e fades laterais durante o giro. */
+.arc-carousel__stage { background: radial-gradient(ellipse at 50% 100%, #141416 0%, #080808 68%); }
+
+.arc-carousel__stage::after {
+	content: '';
+	position: absolute;
+	z-index: 3;
+	inset: 0;
+	background: linear-gradient(to right, #080808 0%, rgba(8, 8, 8, 0) 16%, rgba(8, 8, 8, 0) 84%, #080808 100%);
+	pointer-events: none;
+}
+
 .arc-carousel__heading {
 	position: absolute;
 	z-index: 2;

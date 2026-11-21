@@ -279,6 +279,7 @@ const CircularCarousel = ({
     intro: null,
     introDone: false,
     holdUntil: 0,
+    stopAutoplay: false,
     stepAt: 0,
     suppressClick: false,
     wheelTimer: 0,
@@ -486,7 +487,7 @@ const CircularCarousel = ({
         }
       }
 
-      const paused = (s.pauseOnHover && state.hover) || state.drag || now < state.holdUntil;
+      const paused = state.stopAutoplay || (s.pauseOnHover && state.hover) || state.drag || now < state.holdUntil;
       const cruise = s.autoplay === 'drift' && !paused && !state.intro ? s.speed * state.dir : 0;
       let busy = Boolean(state.intro) || state.drag;
 
@@ -768,6 +769,7 @@ const CircularCarousel = ({
     const press = state.press;
     if (!press || press.id !== event.pointerId) return;
     state.press = null;
+    if (press.moved) state.stopAutoplay = true;
     if (!press.moved) return;
     state.drag = false;
     setDragging(false);
@@ -810,6 +812,8 @@ const CircularCarousel = ({
     }
     const card = event.target.closest?.('[data-cc-index]');
     if (!card) return;
+    // Interação do usuário: o carrossel para de girar permanentemente.
+    state.stopAutoplay = true;
     const index = Number(card.getAttribute('data-cc-index'));
     if (focusOnClick) focusIndex(index);
     onItemClick?.(list[index], index);
@@ -818,6 +822,7 @@ const CircularCarousel = ({
   const handleKeyDown = event => {
     const forward = axis === 'x' ? 'ArrowDown' : 'ArrowRight';
     const backward = axis === 'x' ? 'ArrowUp' : 'ArrowLeft';
+    stateRef.current.stopAutoplay = true;
     if (event.key === forward) stepBy(1);
     else if (event.key === backward) stepBy(-1);
     else if (event.key === 'Home') focusIndex(0);
