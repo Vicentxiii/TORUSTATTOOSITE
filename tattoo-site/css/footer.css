@@ -33,10 +33,9 @@
 
 .site-footer__head {
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	justify-content: space-between;
-	flex-wrap: wrap;
-	gap: 1rem 2rem;
+	gap: 2rem;
 	padding-bottom: clamp(2.5rem, 5vw, 4rem);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
@@ -57,10 +56,11 @@
 .site-footer__brand-text span { color: #a9a59f; }
 
 .site-footer__brand-logo {
-	width: 28px;
-	height: 28px;
+	width: 64px;
+	height: 64px;
+	flex: none;
 	object-fit: contain;
-	opacity: 0.9;
+	opacity: 0.95;
 	filter: brightness(0) invert(1);
 }
 
@@ -188,7 +188,9 @@
 
 @media (max-width: 760px) {
 	.site-footer__cols { grid-template-columns: 1fr; gap: 2.25rem; }
-	.site-footer__head { align-items: flex-start; }
+	.site-footer__head { align-items: center; gap: 1rem; flex-wrap: wrap; }
+	.site-footer__head p { order: 3; flex-basis: 100%; }
+	.site-footer__brand-logo { width: 52px; height: 52px; }
 	.site-footer__bottom { justify-content: space-between; align-items: center; }
 }
 
