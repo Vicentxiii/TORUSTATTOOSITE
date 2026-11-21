@@ -349,7 +349,7 @@ function initVideoScroll() {
 	if (window.matchMedia("(max-width: 640px)").matches) {
 		const poster = document.createElement("img");
 		poster.className = "video-section__media video-section__media--poster";
-		poster.src = mobileFrames[0] || hdFrames[0] || "";
+		poster.src = hdFrames[0] || mobileFrames[0] || "";
 		poster.alt = "";
 		poster.loading = "lazy";
 		poster.decoding = "async";
@@ -357,6 +357,24 @@ function initVideoScroll() {
 		section.querySelectorAll(".stat__number").forEach((element) => {
 			element.textContent = `${element.dataset.target || 0}${element.dataset.suffix || ""}`;
 		});
+
+		// Animação mobile: os números sobem um pouco mais a cada passo.
+		const stats = Array.from(section.querySelectorAll(".stat"));
+		gsap.fromTo(stats,
+			{ y: 26, opacity: 0 },
+			{
+				y: 0,
+				opacity: 1,
+				duration: 0.7,
+				ease: "power3.out",
+				stagger: 0.12,
+				scrollTrigger: {
+					trigger: section,
+					start: "top 75%",
+					once: true,
+				},
+			},
+		);
 		return;
 	}
 
