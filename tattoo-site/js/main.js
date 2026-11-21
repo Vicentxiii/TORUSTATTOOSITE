@@ -135,6 +135,10 @@ function initMobileWork() {
 let lenis;
 
 function initLenis() {
+	// Mobile first: scroll nativo, sem Lenis. O scroll suave do Lenis causa
+	// engasgos e "voltas" no iPhone/Android, principalmente com as imagens.
+	if (window.matchMedia('(max-width: 640px)').matches) return;
+
 	// Sincroniza o scroll suave com o ciclo de atualização do GSAP.
 	if (typeof Lenis === "undefined") return;
 
@@ -195,7 +199,7 @@ function initHero() {
 			if (document.hidden) return;
 			current = (current + 1) % covers.length;
 			showCover(current);
-		}, 500);
+		}, 800);
 		window.addEventListener('pagehide', () => window.clearInterval(timer), { once: true });
 	}
 
