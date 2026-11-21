@@ -6,11 +6,20 @@ const DEFAULT_ITEMS = [
   'Trance', 'Funk', 'Disco', 'Hip-Hop', 'Chillwave', 'Drum & Bass'
 ];
 
+const toRgb = (hex) => {
+  const value = String(hex || '').replace('#', '');
+  if (value.length !== 6) return [160, 160, 160];
+  return [0, 2, 4].map((i) => parseInt(value.slice(i, i + 2), 16));
+};
+
+const mixRgb = (a, b, t) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',')})`;
+
 const OptionWheel = ({
   items = DEFAULT_ITEMS,
   defaultSelected = 3,
   onChange,
   onItemClick,
+  onTick,
   textColor = '#a6a6a6',
   activeColor = '#ffffff',
   side = 'left',
@@ -38,6 +47,8 @@ const OptionWheel = ({
   const cfgRef = useRef({});
   const onChangeRef = useRef(onChange);
   const onItemClickRef = useRef(onItemClick);
+  const onTickRef = useRef(onTick);
+  const colorRef = useRef({ rest: toRgb(textColor), active: toRgb(activeColor) });
   const selectedRef = useRef(defaultSelected);
   const wheelTimerRef = useRef(null);
   const dragRef = useRef(null);
@@ -52,8 +63,11 @@ const OptionWheel = ({
 
   onChangeRef.current = onChange;
   onItemClickRef.current = onItemClick;
+  onTickRef.current = onTick;
+  colorRef.current = { rest: toRgb(textColor), active: toRgb(activeColor) };
   cfgRef.current = {
     count: items.length,
+    lightweight: typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches,
     items,
     rowH: Math.max(fontSize * spacing * remPx, 1),
     curve,
@@ -108,8 +122,20 @@ const OptionWheel = ({
       }
       el.style.transform = `translate(${x.toFixed(2)}px, calc(${y.toFixed(2)}px - 50%)) rotate(${rot.toFixed(3)}deg)`;
       el.style.opacity = String(Math.max(cfg.minOpacity, 1 - dist * cfg.fade));
-      el.style.filter = cfg.blur > 0 ? `blur(${(dist * cfg.blur).toFixed(2)}px)` : 'none';
-      el.style.setProperty('--ow-p', Math.max(0, 1 - Math.min(dist, 1)).toFixed(4));
+
+      if (cfg.lightweight) {
+        // Mobile: nada de blur nem color-mix por frame — cor interpolada em JS.
+        const p = Math.max(0, 1 - Math.min(dist, 1));
+        const bucket = p.toFixed(2);
+        if (el.dataset.owp !== bucket) {
+          el.dataset.owp = bucket;
+          const { rest, active } = colorRef.current;
+          el.style.color = mixRgb(rest, active, p);
+        }
+      } else {
+        el.style.filter = cfg.blur > 0 ? `blur(${(dist * cfg.blur).toFixed(2)}px)` : 'none';
+        el.style.setProperty('--ow-p', Math.max(0, 1 - Math.min(dist, 1)).toFixed(4));
+      }
     }
 
     rafRef.current = settled ? null : requestAnimationFrame(runFrame);
@@ -122,10 +148,12 @@ const OptionWheel = ({
   }, [runFrame]);
 
   const playTick = useCallback(() => {
+    if (onTickRef.current) {
+      onTickRef.current();
+      return;
+    }
     const { soundUrl, soundVolume } = cfgRef.current;
     if (!soundUrl) return;
-    // Uma instância nova por ponto: 3 passos = 3Cliques distintos, sem
-    // o throttle antigo que engolia os sons quando o dedo passava rápido.
     const audio = new Audio(soundUrl);
     audio.volume = Math.min(Math.max(soundVolume, 0), 1);
     audio.play()?.catch(() => {});

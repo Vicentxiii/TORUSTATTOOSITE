@@ -17,9 +17,40 @@ function SiteMenu() {
   const [selected, setSelected] = useState(0);
   const navTimer = useRef(null);
   const selectedRef = useRef(0);
+  const audioCtxRef = useRef(null);
   const path = window.location.pathname.replace(/\/$/, '') || '/';
   const initialIndex = Math.max(0, ITEMS.findIndex((item) => item.href === path));
   const isMobile = window.matchMedia('(max-width: 640px)').matches;
+
+  // Tick curto e suave via Web Audio: sem arquivo, sem download, sem atraso.
+  const unlockAudio = useCallback(() => {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    if (!audioCtxRef.current) audioCtxRef.current = new Ctx();
+    if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume();
+  }, []);
+
+  const playTickSound = useCallback(() => {
+    const ctx = audioCtxRef.current;
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(920, now);
+    osc.frequency.exponentialRampToValueAtTime(640, now + 0.022);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.035, now + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.03);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.032);
+  }, []);
 
   const go = useCallback((index) => {
     window.clearTimeout(navTimer.current);
@@ -66,7 +97,10 @@ function SiteMenu() {
         type="button"
         aria-expanded={open}
         aria-label={open ? 'Fechar menu' : 'Abrir menu'}
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => {
+          unlockAudio();
+          setOpen((value) => !value);
+        }}
       >
         <span className="site-menu-trigger__lines" aria-hidden="true"><i /><i /></span>
         <span className="site-menu-trigger__label">{open ? 'FECHAR' : 'MENU'}</span>
@@ -87,8 +121,7 @@ function SiteMenu() {
               defaultSelected={initialIndex}
               onChange={handleChange}
               onItemClick={handleItemClick}
-              soundUrl="/sounds/click-soft.wav"
-              soundVolume={0.7}
+              onTick={playTickSound}
               textColor="#7d7a75"
               activeColor="#ffffff"
               side={isMobile ? 'right' : 'left'}
@@ -99,7 +132,7 @@ function SiteMenu() {
               blur={isMobile ? 0.8 : 2}
               fade={0.22}
               minOpacity={0.06}
-              smoothing={isMobile ? 120 : 220}
+              smoothing={isMobile ? 90 : 220}
               inset={isMobile ? 22 : Math.max(80, window.innerWidth * 0.1)}
               loop
               draggable
