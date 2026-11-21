@@ -139,9 +139,8 @@
 .site-menu__enter:hover { background: #fff; color: #0a0a0a; }
 
 @media (max-width: 640px) {
-	/* Sem blur no overlay e sem filter na roda: toque bem mais fluido. */
-	.site-menu-overlay { backdrop-filter: none; -webkit-backdrop-filter: none; }
-	.site-menu__option-wheel .option-wheel__item { will-change: transform, opacity; }
+	/* Menos blur = rolagem bem mais fluida no toque. */
+	.site-menu-overlay { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 
 	.site-menu-trigger__label { display: none; }
 	.site-menu-trigger { padding: 0.55rem 0.7rem; }

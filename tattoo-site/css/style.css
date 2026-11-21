@@ -744,6 +744,23 @@ body.preloader-active {
 		padding: 1.1rem 1.5rem;
 		font-size: 0.95rem;
 	}
+
+	/* Capas mobile: 9:16 cobrindo a largura toda da hero. */
+	.hero__word-wrap { width: 100%; max-height: none; }
+
+	.hero__title-art--mobile {
+		width: 100vw;
+		max-width: none;
+		height: auto;
+		max-height: none;
+	}
+
+	.hero__title-art--mobile:not(:first-child) {
+		width: 100vw;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {

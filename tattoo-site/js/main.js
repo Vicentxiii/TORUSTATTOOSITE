@@ -30,6 +30,13 @@ const coverModules = import.meta.glob('/assets/TITULO DA HERO*.png', {
 	import: 'default',
 });
 
+const sortCovers = (modules) => Object.entries(modules)
+	.sort(([first], [second]) => {
+		const rank = (path) => Number(path.match(/CAPA (\d+)/i)?.[1] ?? 99);
+		return rank(first) - rank(second);
+	})
+	.map(([, url]) => url);
+
 const heroCovers = Object.entries(coverModules)
 	.filter(([path]) => path !== '/assets/TITULO DA HERO.png')
 	.sort(([first], [second]) => {
@@ -41,6 +48,28 @@ const heroCovers = Object.entries(coverModules)
 		return rank(first) - rank(second);
 	})
 	.map(([, src]) => src);
+
+// Capas exclusivas do mobile (scroll trigger na hero).
+const mobileCoverModules = import.meta.glob('/assets/CAPA* MOBILE.png', {
+	eager: true,
+	query: '?url',
+	import: 'default',
+});
+const mobileJpgModules = import.meta.glob('/assets/CAPA* MOBILE.jpg', {
+	eager: true,
+	query: '?url',
+	import: 'default',
+});
+const mobileCoverEntries = Object.entries({ ...mobileCoverModules, ...mobileJpgModules })
+	.sort(([first], [second]) => Number(first.match(/CAPA (\d+)/i)?.[1] ?? 99) - Number(second.match(/CAPA (\d+)/i)?.[1] ?? 99));
+const mobileCovers = [];
+const seenCovers = new Set();
+mobileCoverEntries.forEach(([path, url]) => {
+	const number = path.match(/CAPA (\d+)/i)?.[1];
+	if (seenCovers.has(number)) return;
+	seenCovers.add(number);
+	mobileCovers.push(url);
+});
 
 function finishPreloader(preloader, site) {
 	// Libera a página imediatamente quando a animação não deve ser executada.
@@ -117,11 +146,20 @@ function initHero() {
 		ease: "power4.out",
 	});
 
+	// No mobile usa as capas novas; no desktop mantém as capas antigas.
+	const isMobileHero = window.matchMedia('(max-width: 640px)').matches;
+	const coversToUse = isMobileHero && mobileCovers.length ? mobileCovers : heroCovers;
+
 	// Empilha as capas extras — cada passo do scroll mostra uma nova.
 	titleWord?.querySelectorAll(".hero__title-art--extra").forEach((el) => el.remove());
-	heroCovers.slice(1).forEach((src) => {
+	const firstCover = titleWord?.querySelector('.hero__title-art');
+	if (firstCover) {
+		firstCover.src = coversToUse[0];
+		firstCover.classList.toggle('hero__title-art--mobile', isMobileHero);
+	}
+	coversToUse.slice(1).forEach((src) => {
 		const img = document.createElement("img");
-		img.className = "hero__title-art hero__title-art--extra";
+		img.className = `hero__title-art hero__title-art--extra${isMobileHero ? ' hero__title-art--mobile' : ''}`;
 		img.src = src;
 		img.alt = "";
 		img.setAttribute("aria-hidden", "true");
