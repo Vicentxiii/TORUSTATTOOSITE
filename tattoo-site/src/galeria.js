@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import DitherVeil from './components/DitherVeil.jsx';
 // Importar a imagem (em vez de usar um caminho literal) faz o Vite copeá-la
 // para o dist com hash — sem isso o arquivo não existe no deploy.
-import heroImage from '../assets/destaques-galeria.jpg';
+import heroImage from '../assets/hero-galeria-cavalos.png';
 
 // --- HERO com efeito DitherVeil (revela a arte ao passar o cursor) ---
 const heroRoot = document.getElementById('dither-hero');
@@ -36,14 +36,14 @@ if (heroRoot) {
 // ---------------------------------------------------------------------------
 const TAGS = [
   { id: 'todos', label: 'Todos', match: null },
-  { id: 'destaques', label: 'Destaques', match: ['colorido', 'coloridos', 'colorida'] },
+  { id: 'destaques', label: 'Destaques', match: ['colorido', 'coloridos', 'colorida', 'odim', 'odin'] },
   { id: 'fine-line', label: 'Fine Line', match: ['fine line', 'fineline', 'fine-line'] },
   { id: 'realismo', label: 'Realismo', match: ['realismo', 'realistic', 'realism'] },
   { id: 'coloridos', label: 'Coloridos', match: ['colorido', 'coloridos', 'color', 'colorida'] },
 ];
 
-// Tag "Destaques": só as artes coloridas (as mesmas de Coloridos).
-const FEATURED_MATCH = ['colorido', 'coloridos', 'colorida'];
+// Tag "Destaques": artes coloridas + Odin.
+const FEATURED_MATCH = ['colorido', 'coloridos', 'colorida', 'odim', 'odin'];
 
 const artworkModules = import.meta.glob('../assets/Galeria/*.{jpg,jpeg,png,webp,avif}', {
   eager: true,
