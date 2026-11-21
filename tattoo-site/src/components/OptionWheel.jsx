@@ -124,17 +124,10 @@ const OptionWheel = ({
   const playTick = useCallback(() => {
     const { soundUrl, soundVolume } = cfgRef.current;
     if (!soundUrl) return;
-    const now = performance.now();
-    if (now - lastTickRef.current < 70) return;
-    lastTickRef.current = now;
-    if (!audioRef.current || audioUrlRef.current !== soundUrl) {
-      audioRef.current = new Audio(soundUrl);
-      audioRef.current.preload = 'auto';
-      audioUrlRef.current = soundUrl;
-    }
-    const audio = audioRef.current;
+    // Uma instância nova por ponto: 3 passos = 3Cliques distintos, sem
+    // o throttle antigo que engolia os sons quando o dedo passava rápido.
+    const audio = new Audio(soundUrl);
     audio.volume = Math.min(Math.max(soundVolume, 0), 1);
-    audio.currentTime = 0;
     audio.play()?.catch(() => {});
   }, []);
 

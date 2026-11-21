@@ -132,11 +132,15 @@ body {
 	line-height: 1.7;
 }
 
+.ms-filters-wrap { position: relative; }
+
 .ms-filters {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem;
 }
+
+.ms-filters__arrow { display: none; }
 
 .ms-filter {
 	display: inline-flex;
@@ -295,6 +299,43 @@ body {
 	}
 
 	.ms-filters::-webkit-scrollbar { display: none; }
+
+	/* Setinhas + fade preto nas laterais para indicar o slide. */
+	.ms-filters-wrap::before,
+	.ms-filters-wrap::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0.5rem;
+		z-index: 2;
+		width: 34px;
+		pointer-events: none;
+	}
+
+	.ms-filters-wrap::before {
+		left: 0;
+		background: linear-gradient(to right, var(--ms-bg), rgba(20, 19, 19, 0));
+	}
+
+	.ms-filters-wrap::after {
+		right: 0;
+		background: linear-gradient(to left, var(--ms-bg), rgba(20, 19, 19, 0));
+	}
+
+	.ms-filters__arrow {
+		position: absolute;
+		top: 45%;
+		z-index: 3;
+		display: block;
+		transform: translateY(-50%);
+		color: #fff;
+		font-size: 1.1rem;
+		line-height: 1;
+		pointer-events: none;
+	}
+
+	.ms-filters__arrow--left { left: 0.35rem; }
+	.ms-filters__arrow--right { right: 0.35rem; }
 
 	.ms-filter {
 		flex: none;

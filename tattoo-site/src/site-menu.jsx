@@ -92,14 +92,14 @@ function SiteMenu() {
               textColor="#7d7a75"
               activeColor="#ffffff"
               side={isMobile ? 'right' : 'left'}
-              fontSize={isMobile ? 3.3 : 3.1}
-              spacing={1.26}
+              fontSize={isMobile ? 3.9 : 3.1}
+              spacing={1.24}
               curve={1}
               tilt={5.5}
-              blur={2}
+              blur={isMobile ? 0.8 : 2}
               fade={0.22}
               minOpacity={0.06}
-              smoothing={220}
+              smoothing={isMobile ? 120 : 220}
               inset={isMobile ? 22 : Math.max(80, window.innerWidth * 0.1)}
               loop
               draggable

@@ -77,6 +77,8 @@ body {
 
 .gallery-hero__hint span { color: #fff; }
 
+.gallery-hero__hint-mobile { display: none; }
+
 .gallery-hero__scroll {
 	position: absolute;
 	z-index: 2;
@@ -326,6 +328,19 @@ body {
 
 .gallery-floating-link:hover svg { transform: translate(2px, -2px); }
 
+.gallery-card__badge {
+	position: absolute;
+	top: 0.75rem;
+	left: 0.75rem;
+	z-index: 2;
+	padding: 0.35rem 0.55rem;
+	background: #e6e2da;
+	color: #080706;
+	font-size: 0.52rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+}
+
 /* Fade preto fixo no rodapé, presente durante todo o scroll. */
 .gallery-bottom-fade {
 	position: fixed;
@@ -378,6 +393,9 @@ body {
 		font-size: 0.8rem;
 		line-height: 1;
 	}
+
+	.gallery-hero__hint-desktop { display: none; }
+	.gallery-hero__hint-mobile { display: inline; }
 
 	.gallery-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 	.gallery-card__book { display: none; }

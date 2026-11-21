@@ -139,6 +139,9 @@
 .site-menu__enter:hover { background: #fff; color: #0a0a0a; }
 
 @media (max-width: 640px) {
+	/* Menos blur = rolagem bem mais fluida no toque. */
+	.site-menu-overlay { backdrop-filter: blur(4px); }
+
 	.site-menu-trigger__label { display: none; }
 	.site-menu-trigger { padding: 0.55rem 0.7rem; }
 	.site-menu__head { padding: 1.25rem; }

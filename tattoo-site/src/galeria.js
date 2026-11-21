@@ -162,9 +162,11 @@ function render() {
   items.forEach((art, index) => {
     const figure = document.createElement('figure');
     figure.className = 'gallery-card';
+    const featured = /lobo e mulher|tigre realismo/.test(art.name);
     figure.innerHTML = `
       <div class="gallery-card__media">
         <img src="${art.src}" alt="Trabalho de tatuagem ${String(index + 1).padStart(2, '0')}" loading="lazy" decoding="async">
+        ${featured ? '<span class="gallery-card__badge">DESTAQUE</span>' : ''}
         <button class="gallery-card__book" type="button" aria-label="Marcar sessão">marcar sessão</button>
       </div>
     `;

@@ -22,7 +22,7 @@ const INFO = [
   { category: 'outros', text: 'O Coringa aparece como símbolo da ruptura com o convencional. Fala de humor sombrio, imprevisibilidade e da liberdade de ser diferente.' },
   { category: 'outros', text: 'Outra versão do Coringa, agora em preto e branco. O contraste reforça o lado mais intenso e irreverente da personagem.' },
   { category: 'animais', text: 'Um leão em traço fino. Representa coragem, liderança e força tranquila — a presença marcante de quem não precisa de exageros.' },
-  { category: 'animais', featured: true, text: 'A borboleta é o símbolo clássico da transformação. Representa mudança, liberdade e renovação depois de um período de espera.' },
+  { category: 'animais', featured: true, featureRank: 2, text: 'A borboleta é o símbolo clássico da transformação. Representa mudança, liberdade e renovação depois de um período de espera.' },
   { category: 'outros', text: 'Uma pin-up em fine line. Celebra beleza, atitude e confiança, com aquele toque retrô que valoriza a expressão pessoal.' },
   { category: 'animais', text: 'Outra borboleta, agora em preto e branco. Fala de delicadeza, leveza e da ideia de recomeçar com mais liberdade.' },
   { category: 'animais', text: 'Um gato com elementos surreais. Representa mistério, intuição e independência, com um ar de sonho que desafia a realidade.' },
@@ -34,14 +34,14 @@ const INFO = [
   },
   { category: 'espiritual', text: 'Uma mulher indígena acompanhada de um gavião. Une força, natureza e espiritualidade: visão ampla, proteção e conexão com a terra.' },
   { category: 'outros', text: 'O retrato de uma mulher indígena em preto e branco. Representa ancestralidade, beleza e resistência dos povos originários.' },
-  { category: 'espiritual', featured: true, text: 'Jesus em preto e branco. Símbolo de fé, esperança e compaixão; uma devoção pessoal ou um momento importante guardado na pele.' },
+  { category: 'espiritual', text: 'Jesus em preto e branco. Símbolo de fé, esperança e compaixão; uma devoção pessoal ou um momento importante guardado na pele.' },
   { category: 'espiritual', text: 'Outra representação de Cristo em preto e branco. Reforça a ideia de luz, orientação e presença constante em meio às dificuldades.' },
-  { category: 'animais', featured: true, text: 'O leão em realismo. Sinônimo de força, coragem e orgulho, também pode representar proteção e a capacidade de enfrentar adversidades.' },
-  { category: 'animais', text: 'Uma mulher ao lado de um lobo, em cores. A cena fala de instinto, lealdade e companhia, destacando a conexão entre as duas figuras.' },
+  { category: 'animais', featured: true, featureRank: 3, text: 'O leão em realismo. Sinônimo de força, coragem e orgulho, também pode representar proteção e a capacidade de enfrentar adversidades.' },
+  { category: 'animais', featured: true, featureRank: 0, text: 'Uma mulher ao lado de um lobo, em cores. A cena fala de instinto, lealdade e companhia, destacando a conexão entre as duas figuras.' },
   { category: 'espiritual', text: 'Odin, o deus nórdico. Representa busca por conhecimento, sacrifício e determinação — um símbolo para quem valoriza a própria jornada.' },
   { category: 'animais', text: 'Uma onça em preto e branco. Símbolo de força silenciosa, agilidade e mistério, ligada à natureza e à presença imponente.' },
   { category: 'simbolos', text: 'As pirâmides. Remetem ao Egito antigo, à busca pela eternidade e ao mistério do além, além de equilíbrio e ambição.' },
-  { category: 'espiritual', featured: true, text: 'Anúbis, o guardião das almas. Simboliza proteção, julgamento e a passagem entre mundos — uma imagem de mistério e ancestralidade.' },
+  { category: 'espiritual', featured: true, featureRank: 4, text: 'Anúbis, o guardião das almas. Simboliza proteção, julgamento e a passagem entre mundos — uma imagem de mistério e ancestralidade.' },
   { category: 'animais', text: 'Um cachorro em realismo. Lealdade e proteção, além de uma forma de manter perto a memória de um companheiro.' },
   { category: 'animais', text: 'Uma mulher indígena com um lobo. Fala de instinto, natureza e ancestralidade, misturando força feminina e espírito selvagem.' },
   { category: 'espiritual', text: 'Uma mulher indígena e uma criança. Representa carinho, proteção e continuidade — a família e aquilo que se quer preservar.' },
@@ -53,8 +53,8 @@ const INFO = [
   { category: 'outros', text: 'Outro surrealismo em preto e branco. Imagens que se misturam e desafiam a percepção, unindo precisão e imaginação.' },
   { category: 'outros', text: 'Mais uma peça surrealista em preto e branco. O contraste entre o detalhe real e o impossível chama atenção para o que não é dito.' },
   { category: 'animais', text: 'Um tubarão colorido. Simboliza força, determinação e movimento, com o respeito pelo poder do oceano.' },
-  { category: 'animais', featured: true, text: 'Um tigre colorido com elementos surreais. Representa coragem, energia e presença — uma afirmação de força e individualidade.' },
-  { category: 'animais', text: 'Um tigre em realismo. Mostra o lado imponente do animal: poder, foco e a beleza dos detalhes da natureza.' },
+  { category: 'animais', text: 'Um tigre colorido com elementos surreais. Representa coragem, energia e presença — uma afirmação de força e individualidade.' },
+  { category: 'animais', featured: true, featureRank: 1, text: 'Um tigre em realismo. Mostra o lado imponente do animal: poder, foco e a beleza dos detalhes da natureza.' },
 ];
 
 const CATEGORIES = [
@@ -110,7 +110,9 @@ function render() {
       title: item.title || artworks[index].name,
     }))
     .filter((item) => artworks[item.index])
-    .filter((item) => activeCategory === 'todos' || item.category === activeCategory);
+    .filter((item) => activeCategory === 'todos' || item.category === activeCategory)
+    // Destaques primeiro: lobo e mulher, tigre realismo e os demais.
+    .sort((a, b) => (a.featureRank ?? 99) - (b.featureRank ?? 99) || a.index - b.index);
 
   if (emptyEl) emptyEl.hidden = items.length > 0;
 

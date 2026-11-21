@@ -262,6 +262,22 @@ function initVideoScroll() {
 	const video = section?.querySelector(".video-section__media");
 	if (!section || !video) return;
 
+	// Mobile first: no iPhone/Android, o scrub de frames/vídeo engasga.
+	// Usa um único poster estático e libera o scroll (sem pin, sem rAF).
+	if (window.matchMedia("(max-width: 640px)").matches) {
+		const poster = document.createElement("img");
+		poster.className = "video-section__media video-section__media--poster";
+		poster.src = mobileFrames[0] || hdFrames[0] || "";
+		poster.alt = "";
+		poster.loading = "lazy";
+		poster.decoding = "async";
+		video.replaceWith(poster);
+		section.querySelectorAll(".stat__number").forEach((element) => {
+			element.textContent = `${element.dataset.target || 0}${element.dataset.suffix || ""}`;
+		});
+		return;
+	}
+
 	const isMobile = window.matchMedia("(max-width: 768px)").matches;
 	const frames = isMobile && mobileFrames.length ? mobileFrames : hdFrames;
 	const FRAME_COUNT = frames.length;

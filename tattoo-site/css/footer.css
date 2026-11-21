@@ -164,5 +164,20 @@
 @media (max-width: 760px) {
 	.site-footer__cols { grid-template-columns: 1fr; gap: 2.25rem; }
 	.site-footer__head { align-items: flex-start; }
-	.site-footer__bottom { justify-content: flex-start; }
+	.site-footer__bottom { justify-content: space-between; align-items: center; }
+}
+
+/* Mobile first: fundo do rodapé com a arte da quarta sessão em cover. */
+@media (max-width: 640px) {
+	.site-footer__bg {
+		background-image: url('../assets/Fundo da quarta sessao completo.png');
+		background-size: cover;
+		background-position: 18% center;
+		background-repeat: no-repeat;
+		opacity: 0.45;
+	}
+
+	.site-footer::after {
+		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.32) 55%, rgba(0, 0, 0, 0.72) 100%);
+	}
 }
