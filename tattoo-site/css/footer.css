@@ -57,10 +57,11 @@
 .site-footer__brand-text span { color: #a9a59f; }
 
 .site-footer__brand-logo {
-	width: 30px;
-	height: 30px;
+	width: 28px;
+	height: 28px;
 	object-fit: contain;
-	opacity: 0.85;
+	opacity: 0.9;
+	filter: brightness(0) invert(1);
 }
 
 .site-footer__head p {
